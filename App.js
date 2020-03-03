@@ -18,8 +18,6 @@ import EstoqueNavigation from './navigation/EstoqueNavigation'
 import StackButtomTabNavigator from './navigation/BottomTabNavigator'
 const Drawer = createDrawerNavigator();
 
-
-
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>

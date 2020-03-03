@@ -58,6 +58,9 @@ export default StyleSheet.create({
     produto:{
         ...testeStyle,
         margin:10
+    },
+    listaProdutos:{
+        flexDirection:'row',
+        justifyContent:'center'
     }
-
 })

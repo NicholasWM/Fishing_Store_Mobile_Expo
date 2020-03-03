@@ -1,85 +1,45 @@
-
 import React, {useState} from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import styles from './Styles'
 
+import data from '../../data'
+import Modal from '../../components/Modal'
+import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
 const search_icon = require('../../assets/images/search.png')
-
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad253abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd391aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-1445571e29d72',
-        title: 'Third Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad513abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-f4bd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-6145571e29d72',
-        title: 'Third Item',
-      },
-      {
-        id: 'bd7acbea-2c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-4a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-1455711e29d72',
-        title: 'Third Item',
-      },
-      {
-        id: 'bd7acbea-3c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68a4fc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-53da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-  ];
 
 import { Text,
          View,
          FlatList,
          SafeAreaView,
          TextInput,
-         Image
+         Image,
 } from 'react-native';
-
+function modalContent(item){
+  return (
+    <Text>{JSON.stringify(item)}</Text>
+  )
+}
 export default function EstoqueScreen(){
     const [pesquisa, setPesquisa] = useState('')
+    const [visibleModal, setterModal] = useState(false)
+    const [conteudoModal, setConteudoModal]=useState({})
+    const renderCategoria = (item)=> {
+      return(
+        <View style={{alignItems:'center', marginBottom:10, borderColor:'orange', borderWidth:5,borderRadius:50, backgroundColor: "rgb(20,10,30)"}}>
+          <Text style={{fontSize:18, fontWeight:'bold', padding:20, color:'#fff'}}>{item.categoria}</Text>
 
+          <ScrollCategoriasItems
+            produtos={item.produtos}
+            onPressEvent={(prod)=>{setterModal(true); setConteudoModal(prod)}}
+          />
+          
+          <TouchableOpacity 
+            onPress={()=>{setterModal(true); setConteudoModal(item)}}
+            style={{borderColor:'orange', borderTopWidth:3, width:300}}>
+            <Text style={{padding:15,color:'white', fontSize:20, alignSelf:'center'}}>Ver Todos</Text></TouchableOpacity>
+        </View>
+    )}
     function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
     return (
     
@@ -100,14 +60,24 @@ export default function EstoqueScreen(){
                 </TouchableOpacity>
             </View>
             <SafeAreaView style={styles.scrollProdutosContainer}>
-                <Text>Estoque</Text>
                 <FlatList
-                    data={DATA}
-                    renderItem={({ item }) => <Text style={styles.produto}>{item.title}</Text>}
+                    data={data.produtos}
+                    renderItem={({ item }) => renderCategoria(item)}
                     keyExtractor={item => item.id}
                     style={styles.scrollProdutos}
                 />
             </SafeAreaView>
+            <Modal
+                    setterModal={setterModal}
+                    animationType="slide"
+                    transparent={false}
+                    visibleModal={visibleModal}
+                    titulo={"titulo"}
+                    conteudo={modalContent(conteudoModal)}
+                    // logs={errorLog}
+                    // footer={footer(() => setterModal(false))}
+                />
+
         </View>
     )
 }
