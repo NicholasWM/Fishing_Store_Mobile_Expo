@@ -24,20 +24,23 @@ export default function EstoqueScreen(){
     const [pesquisa, setPesquisa] = useState('')
     const [visibleModal, setterModal] = useState(false)
     const [conteudoModal, setConteudoModal]=useState({})
+    
     const renderCategoria = (item)=> {
       return(
-        <View style={{alignItems:'center', marginBottom:10, borderColor:'orange', borderWidth:5,borderRadius:50, backgroundColor: "rgb(20,10,30)"}}>
-          <Text style={{fontSize:18, fontWeight:'bold', padding:20, color:'#fff'}}>{item.categoria}</Text>
+        <View style={styles.containerCategoria}>
+          <Text style={styles.tituloCategoria}>{item.categoria}</Text>
 
           <ScrollCategoriasItems
             produtos={item.produtos}
-            onPressEvent={(prod)=>{setterModal(true); setConteudoModal(prod)}}
-          />
-          
-          <TouchableOpacity 
-            onPress={()=>{setterModal(true); setConteudoModal(item)}}
-            style={{borderColor:'orange', borderTopWidth:3, width:300}}>
-            <Text style={{padding:15,color:'white', fontSize:20, alignSelf:'center'}}>Ver Todos</Text></TouchableOpacity>
+            onPressEvent={(prod)=>{setterModal(true); setConteudoModal(prod)}}/>
+
+          <TouchableOpacity onPress={()=>{setterModal(true); setConteudoModal(item)}}
+            style={styles.botaoVerTodos}>
+
+            <Text style={styles.textoVerTodos}>
+                Ver Todos
+            </Text>
+          </TouchableOpacity>
         </View>
     )}
     function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
@@ -63,7 +66,7 @@ export default function EstoqueScreen(){
                 <FlatList
                     data={data.produtos}
                     renderItem={({ item }) => renderCategoria(item)}
-                    keyExtractor={item => item.id}
+                    keyExtractor={({categoria}) => categoria}
                     style={styles.scrollProdutos}
                 />
             </SafeAreaView>
@@ -74,8 +77,6 @@ export default function EstoqueScreen(){
                     visibleModal={visibleModal}
                     titulo={"titulo"}
                     conteudo={modalContent(conteudoModal)}
-                    // logs={errorLog}
-                    // footer={footer(() => setterModal(false))}
                 />
 
         </View>
