@@ -11,6 +11,10 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 
+import {Provider} from 'react-redux'
+import store from './store'
+
+
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
@@ -69,19 +73,22 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-            
-          <Drawer.Navigator 
-            initialRouteName="Home"
-            drawerContent={props=> CustomDrawerContent(props)}
-          >
-            <Drawer.Screen name="Home" component={StackButtomTabNavigator} />
-            <Drawer.Screen name="Estoque" component={EstoqueNavigation} />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </View>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <Provider store={store}>
+            <NavigationContainer ref={containerRef} >
+                
+              <Drawer.Navigator 
+                initialRouteName="Home"
+                drawerContent={props=> CustomDrawerContent(props)}
+              >
+                  <Drawer.Screen name="Home" component={StackButtomTabNavigator} />
+                  <Drawer.Screen name="Estoque" component={EstoqueNavigation} />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </Provider>
+
+        </View>
     );
   }
 }

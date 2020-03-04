@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import styles from './Styles'
 
 import data from '../../data'
+import {useSelector} from 'react-redux'
 import Modal from '../../components/Modal'
 import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
 const search_icon = require('../../assets/images/search.png')
@@ -24,7 +25,9 @@ export default function EstoqueScreen(){
     const [pesquisa, setPesquisa] = useState('')
     const [visibleModal, setterModal] = useState(false)
     const [conteudoModal, setConteudoModal]=useState({})
-    
+
+    const produtos = useSelector(({produtos})=>produtos)
+
     const renderCategoria = (item)=> {
       return(
         <View style={styles.containerCategoria}>
@@ -64,7 +67,7 @@ export default function EstoqueScreen(){
             </View>
             <SafeAreaView style={styles.scrollProdutosContainer}>
                 <FlatList
-                    data={data.produtos}
+                    data={produtos}
                     renderItem={({ item }) => renderCategoria(item)}
                     keyExtractor={({categoria}) => categoria}
                     style={styles.scrollProdutos}
