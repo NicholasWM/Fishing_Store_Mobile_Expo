@@ -1,21 +1,22 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-
-import DrawerTab from '../../components/DrawerTab'
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import DrawerTab from '../../components/DrawerTab'
 import IconImage from '../../components/IconImage'
 
 import EstoqueScreen from '../../screens/Estoque'
 import AdicionarEstoqueScreen from '../../screens/AdicionarEstoque'
-
 import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
-const Stack = createStackNavigator();
+import VisualizarProduto from '../../screens/VisualizarProduto'
+import AlterarEstoque from '../../screens/AlterarEstoque'
+
+
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
 const INITIAL_ROUTE_NAME = 'Estoque';
-
 
 function EstoqueNavigator({navigation, route}){
     navigation.setOptions({ headerTitle: () => (
@@ -75,10 +76,22 @@ function EstoqueNavigator({navigation, route}){
     )
 }
 
+function MainStackScreen(){
+    return (
+        <MainStack.Navigator>
+         <MainStack.Screen name="Root" component={EstoqueNavigator} />
+       </MainStack.Navigator>
+    )
+}
 export default function StackEstoque(props) {
     return (
-      <Stack.Navigator>
-         <Stack.Screen name="Root" component={EstoqueNavigator} />
-       </Stack.Navigator>
+        <RootStack.Navigator mode='modal'>
+            <RootStack.Screen 
+                options={{headerShown:false}}
+                name='EstoqueNavigation'
+                component={MainStackScreen}/>
+            <RootStack.Screen name="AlterarEstoque" component={AlterarEstoque}/>
+            <RootStack.Screen name="VisualizarProduto" component={VisualizarProduto}/>
+        </RootStack.Navigator>
       );
 }
