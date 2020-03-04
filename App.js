@@ -14,8 +14,6 @@ import {
 import {Provider} from 'react-redux'
 import store from './store'
 
-
-import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 
 import EstoqueNavigation from './navigation/EstoqueNavigation'

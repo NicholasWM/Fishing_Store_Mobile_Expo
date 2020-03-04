@@ -3,9 +3,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './Styles'
 
-import data from '../../data'
 import {useSelector} from 'react-redux'
-import Modal from '../../components/Modal'
 import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
 const search_icon = require('../../assets/images/search.png')
 
@@ -21,11 +19,8 @@ function modalContent(item){
     <Text>{JSON.stringify(item)}</Text>
   )
 }
-export default function EstoqueScreen(){
+export default function EstoqueScreen({navigation}){
     const [pesquisa, setPesquisa] = useState('')
-    const [visibleModal, setterModal] = useState(false)
-    const [conteudoModal, setConteudoModal]=useState({})
-
     const produtos = useSelector(({produtos})=>produtos)
 
     const renderCategoria = (item)=> {
@@ -35,15 +30,17 @@ export default function EstoqueScreen(){
 
           <ScrollCategoriasItems
             produtos={item.produtos}
-            onPressEvent={(prod)=>{setterModal(true); setConteudoModal(prod)}}/>
+            onPressEvent={(prod)=> navigation.navigate('VisualizarProduto', prod)}
+            />
 
-          <TouchableOpacity onPress={()=>{setterModal(true); setConteudoModal(item)}}
-            style={styles.botaoVerTodos}>
-
-            <Text style={styles.textoVerTodos}>
-                Ver Todos
-            </Text>
+            <TouchableOpacity style={styles.botaoVerTodos}>
+              <Text style={styles.textoVerTodos}>
+                  Ver Todos
+              </Text>
           </TouchableOpacity>
+
+          
+
         </View>
     )}
     function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
@@ -73,15 +70,6 @@ export default function EstoqueScreen(){
                     style={styles.scrollProdutos}
                 />
             </SafeAreaView>
-            <Modal
-                    setterModal={setterModal}
-                    animationType="slide"
-                    transparent={false}
-                    visibleModal={visibleModal}
-                    titulo={"titulo"}
-                    conteudo={modalContent(conteudoModal)}
-                />
-
         </View>
     )
 }
