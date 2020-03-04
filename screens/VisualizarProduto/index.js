@@ -18,7 +18,7 @@ const edit = require('../../assets/images/edit.png')
 const product_management = require('../../assets/images/product-management.png')
 
 export default function AdicionarEstoqueScreen({route, navigation}){
-    const {id, quantidade, imagem} = route.params
+    const {imagem} = route.params
     const  [nome, setNome] = useState('')
     const  [preco, setPreco] = useState('')
     const  [categoria, setCategoria] = useState('')
@@ -38,7 +38,6 @@ export default function AdicionarEstoqueScreen({route, navigation}){
                     </TouchableOpacity>
                 </View>
             </>
-        
         )
     }
     return (
@@ -46,7 +45,6 @@ export default function AdicionarEstoqueScreen({route, navigation}){
             <ScrollView 
                 contentContainerStyle={styles.container} 
                 centerContent={true} keyboardShouldPersistTaps='never'>
-
                     <ImageBackground style={styles.imagemProduto}
                         source={{ uri: `${baseURL}/files/${imagem}` }}>
                         <TouchableOpacity style={styles.botaoTrocarImagem}>
