@@ -1,51 +1,46 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { Text,
+  View,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+  Image,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
 
 import styles from './Styles'
 
-import {useSelector} from 'react-redux'
-import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
+import {getProductsByCategory} from '../../store/fetchActions'
+import {useSelector, useDispatch} from 'react-redux'
+
 const search_icon = require('../../assets/images/search.png')
 
-import { Text,
-         View,
-         FlatList,
-         SafeAreaView,
-         TextInput,
-         Image,
-} from 'react-native';
-function modalContent(item){
-  return (
-    <Text>{JSON.stringify(item)}</Text>
-  )
-}
 export default function EstoqueScreen({navigation}){
     const [pesquisa, setPesquisa] = useState('')
+    
     const produtos = useSelector(({produtos})=>produtos)
-
+    
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+      dispatch(getProductsByCategory())
+    },[dispatch])
+    function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
     const renderCategoria = (item)=> {
       return(
         <View style={styles.containerCategoria}>
           <Text style={styles.tituloCategoria}>{item.categoria}</Text>
-
           <ScrollCategoriasItems
             produtos={item.produtos}
-            onPressEvent={(prod)=> navigation.navigate('VisualizarProduto', prod)}
-            />
-
+            onPressEvent={(prod)=> navigation.navigate('VisualizarProduto', prod)}/>
             <TouchableOpacity style={styles.botaoVerTodos}>
-              <Text style={styles.textoVerTodos}>
-                  Ver Todos
-              </Text>
+              <Text style={styles.textoVerTodos}>Ver Todos</Text>
           </TouchableOpacity>
-
-          
-
         </View>
     )}
-    function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
     return (
-    
         <View style={styles.container}>
             <View style={styles.pesquisa}>
                 <TextInput

@@ -1,9 +1,9 @@
-import { createStore, combineReducers } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 
-import produtos from './produtos'
+import produtos from './ducks/produtos'
 
-const rootReducer = combineReducers({
-    produtos
+export default configureStore({
+    reducer:{
+        produtos
+    }
 })
-
-export default createStore(rootReducer)

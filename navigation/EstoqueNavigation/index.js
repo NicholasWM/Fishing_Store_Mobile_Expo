@@ -6,7 +6,7 @@ import DrawerTab from '../../components/DrawerTab'
 import IconImage from '../../components/IconImage'
 
 import EstoqueScreen from '../../screens/Estoque'
-import AdicionarEstoqueScreen from '../../screens/AdicionarEstoque'
+// import AdicionarEstoqueScreen from '../../screens/AdicionarEstoque'
 import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
 import VisualizarProduto from '../../screens/VisualizarProduto'
 import AlterarEstoque from '../../screens/AlterarEstoque'
@@ -34,7 +34,7 @@ function EstoqueNavigator({navigation, route}){
                 activeTintColor: 'orange',
                 // inactiveTintColor: ''
               }}>
-            <BottomTab.Screen
+            {/* <BottomTab.Screen
                 name="Adicionar"
                 component={AdicionarEstoqueScreen}
                 options={{
@@ -45,7 +45,7 @@ function EstoqueNavigator({navigation, route}){
                             source={require('../../assets/images/activity-history.png')}
                         />
                     ),
-            }}/>
+            }}/> */}
             <BottomTab.Screen
                 name="Estoque"
                 component={EstoqueScreen}
