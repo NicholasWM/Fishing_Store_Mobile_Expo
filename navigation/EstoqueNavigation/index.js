@@ -8,6 +8,7 @@ import IconImage from '../../components/IconImage'
 import EstoqueScreen from '../../screens/Estoque'
 // import AdicionarEstoqueScreen from '../../screens/AdicionarEstoque'
 import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
+import AddNewProductScreen from '../../screens/AddNewProduct'
 import VisualizarProduto from '../../screens/VisualizarProduto'
 import AlterarEstoque from '../../screens/AlterarEstoque'
 
@@ -64,6 +65,18 @@ function EstoqueNavigator({navigation, route}){
             component={HistoricoEstoqueScreen}
             options={{
                 title: 'Historico',
+                tabBarIcon: ({focused}) => (
+                    <IconImage 
+                        focused={focused}
+                        source={require('../../assets/images/activity-history.png')}
+                    />
+                ),
+            }}/>
+            <BottomTab.Screen
+            name="Add_New_Product"
+            component={AddNewProductScreen}
+            options={{
+                title: 'Novo Produto',
                 tabBarIcon: ({focused}) => (
                     <IconImage 
                         focused={focused}
