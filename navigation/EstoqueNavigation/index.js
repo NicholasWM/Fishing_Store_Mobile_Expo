@@ -7,7 +7,8 @@ import IconImage from '../../components/IconImage'
 
 import EstoqueScreen from '../../screens/Estoque'
 // import AdicionarEstoqueScreen from '../../screens/AdicionarEstoque'
-import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
+// import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
+import HistoricoEstoqueScreen from '../../components/Camera'
 import AddNewProductScreen from '../../screens/AddNewProduct'
 import VisualizarProduto from '../../screens/VisualizarProduto'
 import AlterarEstoque from '../../screens/AlterarEstoque'
@@ -105,6 +106,7 @@ export default function StackEstoque(props) {
                 component={MainStackScreen}/>
             <RootStack.Screen name="AlterarEstoque" component={AlterarEstoque}/>
             <RootStack.Screen name="VisualizarProduto" component={VisualizarProduto}/>
+            <RootStack.Screen name="Camera" component={HistoricoEstoqueScreen}/>
         </RootStack.Navigator>
       );
 }

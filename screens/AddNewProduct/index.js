@@ -1,5 +1,9 @@
 import React, { useRef, useState } from 'react';
-import { TouchableOpacity, Text, Image, StatusBar, } from 'react-native';
+import { TouchableOpacity,
+         Text,
+         Image,
+         StatusBar,
+         View} from 'react-native';
 import { Form } from '@unform/mobile';
 import Input from '../../components/Input';
 import * as ImagePicker from 'expo-image-picker';
@@ -8,9 +12,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux'
 import {fetchAddProduct} from '../../store/fetchActions'
 
-export default function SignIn() {
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [displayImage, setDisplayImage] = useState("");
+import styles from './Styles'
+export default function SignIn({route, navigation}) {
+    const [selectedImage, setSelectedImage] = useState(require('../../assets/images/white-image.png'));
     const dispatch = useDispatch()
     const formRef = useRef(null);
     async function handleSubmit({nome, preco, categoria}) {
@@ -30,47 +34,35 @@ export default function SignIn() {
         return;
     }
     setSelectedImage(pickerResult);
-    setDisplayImage(pickerResult.uri);
 }
   
   return (
-      <ScrollView style={{alignContent:'center', borderColor:'red', borderWidth:3}}>
-        <StatusBar barStyle="dark-content" />
-        {displayImage != "" ?(
+    <>
+        <ScrollView style={styles.container}>
+            <StatusBar barStyle="dark-content" />
             <Image
-                source={{ uri: displayImage}}
-                style={{width: 300,
-                        height: 300,
-                        resizeMode: "contain"}}
+                source={selectedImage}
+                style={styles.selectedImage}
             />
-
-        ):(
-            <Image
-                source={require('../../assets/images/white-image.png')}
-                style={{width: 300,
-                        height: 300,
-                        resizeMode: "contain"}}
-            />
-        ) }
-        <TouchableOpacity onPress={openImagePickerAsync}>
-            <Text>Escolher Imagem da Galeria</Text>
+            <View style={styles.boxSelectionPhotos}>
+                <TouchableOpacity style={styles.buttonGaleryPhotos} onPress={openImagePickerAsync}>
+                    <Text style={styles.textButtonGaleryPhotos}>Escolher Imagem da Galeria</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonGaleryPhotos} onPress={()=>{navigation.navigate('Camera', {setterImage:setSelectedImage})}}>
+                    <Text style={styles.textButtonGaleryPhotos}>Tirar Foto</Text>
+                </TouchableOpacity>
+            </View>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+                <Input label="Nome" name="nome"/>
+                <Input label="Categoria" name="categoria"/>
+                <Input label="Preço" name="preco"/>
+            </Form>
+        </ScrollView>
+        <TouchableOpacity
+            style={styles.submitButtonForm}
+            onPress={() => formRef.current.submitForm()}>
+                <Text style={{fontWeight:'bold',textAlign:'center', color:'white', fontSize:20, margin:10}}>Adicionar</Text>
         </TouchableOpacity>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-            <Input label="Nome" name="nome"/>
-            <Input label="Categoria" name="categoria"/>
-            <Input label="Preço" name="preco"/>
-            <TouchableOpacity
-                style={{
-                    backgroundColor: '#111',
-                    border: 0,
-                    borderRadius: 4,
-                    padding: 16,
-                    alignItems: 'center'
-                }}
-                onPress={() => formRef.current.submitForm()}>
-                    <Text style={{fontWeight:'bold',textAlign:'center', color:'white', fontSize:20, margin:10}}>Adicionar</Text>
-            </TouchableOpacity>
-        </Form>
-      </ScrollView>
+    </>
   );
 }
