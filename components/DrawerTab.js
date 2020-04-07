@@ -7,9 +7,9 @@ export default function DrawerTab({navigation, route, INITIAL_ROUTE_NAME}) {
   switch (routeName) {
     default:
       return (
-        <View style={{width:"100%",flexDirection:'row',justifyContent: 'space-between', alignItems: 'center', borderColor:'red', borderWidth:2}}>
+        <View style={{flexDirection:'row',justifyContent: 'space-between', alignItems: 'center'}}>
           <TouchableOpacity
-            style={{borderColor:'red', borderWidth:2}}
+            // style={{borderColor:'red', borderWidth:2}}
             onPress={navigation.openDrawer}
           >
             <Image source={menu_icon} style={{width: 30, height: 30}}/>

@@ -77,7 +77,7 @@ export default function App(props) {
             <NavigationContainer ref={containerRef} >
                 
               <Drawer.Navigator 
-                initialRouteName="Home"
+                initialRouteName="Estoque"
                 drawerContent={props=> CustomDrawerContent(props)}
               >
                   <Drawer.Screen name="Home" component={StackButtomTabNavigator} />

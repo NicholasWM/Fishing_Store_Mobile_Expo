@@ -58,7 +58,7 @@ export default function AdicionarEstoqueScreen({route, navigation}){
             </ScrollView>
             <View style={styles.opcoes}>
                 <View style={styles.opcoesEstoque}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('AlterarEstoque',route.params)} style={styles.botaoEstoque}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('RegistrosProduto',route.params)} style={styles.botaoEstoque}>
                         <Image style={styles.botaoIcon} source={bookmark}/>
                         <Text style={styles.botaoIconDesc}>Livro Caixa</Text> 
                     </TouchableOpacity>

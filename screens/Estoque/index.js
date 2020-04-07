@@ -12,22 +12,26 @@ import ScrollCategoriasItems from '../../components/ScrollCategoriaItems'
 
 import styles from './Styles'
 
-import {getProductsByCategory} from '../../store/fetchActions'
+import {getProductsByCategory, setSearch, activateSearchAction } from '../../store/fetchActions'
 import {useSelector, useDispatch} from 'react-redux'
 
-const search_icon = require('../../assets/images/search.png')
-
 export default function EstoqueScreen({navigation}){
-    const [pesquisa, setPesquisa] = useState('')
     
     const produtos = useSelector(({produtos})=>produtos)
     
+    const search = useSelector(({search}) => search)
     const dispatch = useDispatch()
-    
+    useEffect(()=> {
+      return navigation.addListener('focus', () => {
+        // The screen is focused
+        // Call any action
+        dispatch(activateSearchAction())
+      });
+    },[navigation])
     useEffect(()=>{
       dispatch(getProductsByCategory())
+      // dispatch(activateSearchAction())
     },[dispatch])
-    function handlePesquisar(){console.log(`Pesquisando > ${pesquisa}`)}
     const renderCategoria = (item)=> {
       return(
         <View style={styles.containerCategoria}>
@@ -42,21 +46,6 @@ export default function EstoqueScreen({navigation}){
     )}
     return (
         <View style={styles.container}>
-            <View style={styles.pesquisa}>
-                <TextInput
-                    style={styles.inputPesquisa}
-                    value={pesquisa}
-                    placeholder="Pesquisar Produtos"
-                    onChangeText={txt => setPesquisa(txt)}
-                />
-                <TouchableOpacity
-                    onPress={handlePesquisar}
-                    style={styles.pesquisaSubmit}>
-                    <Image
-                        style={styles.pesquisaImg}
-                        source={search_icon}/>
-                </TouchableOpacity>
-            </View>
             <SafeAreaView style={styles.scrollProdutosContainer}>
                 <FlatList
                     data={produtos}
