@@ -1,56 +1,56 @@
 
 import React, {
-    useState, useEffect,
+    useEffect,
 } from 'react';
 
 import { Text,
         View,
-        FlatList
+        FlatList,
+        ImageBackground
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { addStockData } from '../../store/ducks/estoque'
 import {  getHistoryStock } from '../../store/fetchActions'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {getProductsByCategory, setSearch, activateSearchAction } from '../../store/fetchActions'
+import { getProductsByCategory, setSearch, activateSearchAction } from '../../store/fetchActions'
+import {baseURL} from '../../services/api'
+import styles from './Styles'
 
 export default function HistoricoEstoqueScreen({navigation}){
 
     const historyStock = useSelector(({estoque}) => estoque)
     const dispatch = useDispatch()
-    useEffect(()=> {
-        return navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
+    useEffect(()=> 
+        navigation.addListener('focus', () => {
             dispatch(activateSearchAction())
-          });
-      },[navigation])
+            dispatch(setSearch('estoque'))
+        })
+    ,[navigation])
     useEffect(()=>{
         dispatch(getHistoryStock())
-        // dispatch(activateSearchAction())
     },[dispatch])
 
-    const stockHistoryItem = ({modo, preco, quantidade, createdAt, produto_id})=>(
-        <View key={produto_id} style={{borderColor:'red', borderWidth:1,flexDirection:'row', padding:8, justifyContent:'space-around'}}>
-            <Text style={{width:"25%", textAlign:'center'}}>{modo}</Text>
-            <Text style={{width:"25%", textAlign:'center'}}>{preco}</Text>
-            <Text style={{width:"25%", textAlign:'center'}}>{quantidade}</Text>
-            <Text style={{width:"25%", textAlign:'center'}}>{new Date(createdAt).getUTCDate()}</Text>
-        </View>
-    )
-    return (
-        <SafeAreaView>
-            <View style={{borderColor:'red', borderWidth:1,flexDirection:'row', padding:8, justifyContent:'space-around'}}>
-                <Text style={{fontWeight:'bold', fontSize:15, width:"25%", textAlign:'center'}}>Modo</Text>
-                <Text style={{fontWeight:'bold', fontSize:15, width:"25%", textAlign:'center'}}>Preco</Text>
-                <Text style={{fontWeight:'bold', fontSize:15, width:"25%", textAlign:'center'}}>Quantidade</Text>
-                <Text style={{fontWeight:'bold', fontSize:15, width:"25%", textAlign:'center'}}>Data</Text>
+    const stockHistoryItem = ({modo, preco, quantidade, createdAt, produto_id, produto})=>{
+        const date = `${new Date(createdAt).getDate()}/${new Date(createdAt).getUTCMonth() + 1}/${new Date(createdAt).getFullYear()}`
+        return(
+        <View key={produto_id} style={modo == 'entrada'?styles.stockItemContainerEntrada:styles.stockItemContainerSaida}>
+            <View style={styles.dataItemContainer}>
+                <Text style={styles.textItemContainer}>{date}</Text>
+                <Text style={modo == 'entrada'?styles.modoEntrada:styles.modoSaida}>{modo}</Text>
+                <Text style={styles.textItemContainer}>{preco} reais</Text>
             </View>
-            <FlatList
-                data={historyStock}
-                renderItem={({item}) => stockHistoryItem(item)}
-                keyExtractor={(item) => String(item.id)}
-            />
-        </SafeAreaView>
+            <ImageBackground style={ styles.dataItemSecondContainer } blurRadius={5} borderRadius={22} source={{ uri: `${baseURL}/files/${produto.imagem}` }}>
+                <Text style={styles.textItemContainerWhite}>{produto.nome}</Text>
+                <Text style={styles.textItemContainerWhite}>{quantidade} unidades</Text>
+            </ImageBackground>
+        </View>
+    )}
+    return (
+        <FlatList
+            style={{borderColor:'red', borderWidth:2}}
+            data={historyStock}
+            renderItem={({item}) => stockHistoryItem(item)}
+            keyExtractor={(item) => String(item.id)}
+        />
     )
 }
