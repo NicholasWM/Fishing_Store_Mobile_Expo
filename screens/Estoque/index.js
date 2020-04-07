@@ -3,8 +3,6 @@ import { Text,
   View,
   FlatList,
   SafeAreaView,
-  TextInput,
-  Image,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -19,18 +17,15 @@ export default function EstoqueScreen({navigation}){
     
     const produtos = useSelector(({produtos})=>produtos)
     
-    const search = useSelector(({search}) => search)
     const dispatch = useDispatch()
-    useEffect(()=> {
-      return navigation.addListener('focus', () => {
-        // The screen is focused
-        // Call any action
+    useEffect(()=> 
+      navigation.addListener('focus', () => {
         dispatch(activateSearchAction())
-      });
-    },[navigation])
+        dispatch(setSearch('produtos'))
+      })
+    ,[navigation])
     useEffect(()=>{
       dispatch(getProductsByCategory())
-      // dispatch(activateSearchAction())
     },[dispatch])
     const renderCategoria = (item)=> {
       return(

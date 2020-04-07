@@ -12,7 +12,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux'
 import {fetchAddProduct} from '../../store/fetchActions'
 import {deactivateSearchAction } from '../../store/fetchActions'
-
 import styles from './Styles'
 export default function SignIn({route, navigation}) {
     const [selectedImage, setSelectedImage] = useState(require('../../assets/images/white-image.png'));
@@ -21,13 +20,9 @@ export default function SignIn({route, navigation}) {
     async function handleSubmit({nome, preco, categoria}) {
         dispatch(fetchAddProduct(nome, preco, categoria, selectedImage))
     }
-    useEffect(()=> {
-        return navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
-            dispatch(deactivateSearchAction())
-          });
-      },[navigation])
+    useEffect(()=> 
+        navigation.addListener('focus', () => {dispatch(deactivateSearchAction())})
+    ,[navigation])
 
     let openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
