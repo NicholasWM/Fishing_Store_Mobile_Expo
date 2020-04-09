@@ -1,37 +1,25 @@
 import {StyleSheet} from 'react-native'
 
 const testeStyle = require('../../helpers/Style').testeStyle
+const patterns = {
+    registerText:{
+        textAlign:'center', color:'white',
+    },
+    registerBox3:{
+        // ...testeStyle,
+        justifyContent:'center',
+        height:50,
+        width:'30%'
+    }
+}
 export default StyleSheet.create({
-    debug:{
-        ...testeStyle
-    },
-    container:{
-        ...testeStyle,
-        alignItems:'center'
-
-    },
     imagemProduto:{
-        ...testeStyle,
-        width:"100%", height:200, marginTop:15,
-        borderWidth:2, borderColor:'orange',
+        // ...testeStyle,
+        width:"95%", height:200, margin:8,
+        borderWidth:2, borderColor:'black', borderRadius:25,
         justifyContent:'flex-end'
     },
-    botaoTrocarImagem:{
-        ...testeStyle,
-        height:40,
-        alignContent:'center',
-        justifyContent:'center',
-        borderWidth:5, borderColor:'white',
-        backgroundColor:'#333'
-    },
-    botaoTrocarImagemTexto:{
-        ...testeStyle,
-        textAlign:'center',
-        color:'orange',
-        fontSize:20
-    },
     campoInput:{
-        ...testeStyle,
         flexDirection:'row',
         justifyContent:'space-around',
         alignItems:'center',
@@ -39,46 +27,42 @@ export default StyleSheet.create({
         marginBottom:10
     },
     inputBox:{
-        ...testeStyle,
         height:70,
         flex:0.7,
         textAlign:'center',
         borderWidth:2, borderColor:'black',
     },
     inputName:{
-        ...testeStyle,
         fontSize:16,
         alignItems:'center',
         width:"90%"
     },
     submitInput:{
-        ...testeStyle,
         flex:0.3,
         height:80,
         justifyContent:'center',
     },
     submitInputText:{
-        ...testeStyle,
         textAlignVertical:'center',
         alignItems:'center',
         textAlign:'center'
     },
     opcoes:{
-        alignItems:'center'
+        alignItems:'center',
+        bottom:0
     },
     opcoesEstoque:{
         flexDirection:'row',
         width:'100%',
+        
         justifyContent:'space-around'
     },
     botaoEstoque:{
-        ...testeStyle,
         height:70,
         width:'50%',
         justifyContent:'center',
     },
     botaoIcon:{
-        ...testeStyle,
         alignItems:'center',
         alignSelf:'center',
         height:40, width:40, tintColor:'#333'
@@ -96,5 +80,38 @@ export default StyleSheet.create({
     salvarAlteracoesTexto:{
         fontSize:20,
     },
-
+    registerContainer: {
+        borderColor:'red', borderWidth:3, borderRadius:5,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        backgroundColor:'#444141',
+        margin:5
+    },
+    registerTextBox1:{
+        ...patterns.registerText,
+        marginRight:15,
+        marginLeft:15,
+        fontSize:13
+    },
+    registerTextBox2:{
+        ...patterns.registerText,
+    },
+    registerTextBox3:{
+        ...patterns.registerText,
+        textTransform:'uppercase',
+        fontWeight:'bold',
+        fontSize:17
+    },
+    registerBox1:{
+        ...patterns.registerBox3,
+    },
+    registerBox3Entry:{
+        ...patterns.registerBox3,
+        backgroundColor:'green',
+    },
+    registerBox3Exit:{
+        ...patterns.registerBox3,
+        backgroundColor:'red',
+    },
 })
