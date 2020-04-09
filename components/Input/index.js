@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Text, TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet, View } from 'react-native';
 import { useField } from '@unform/core';
 function Input({ name, label, ...rest }) {
   const inputRef = useRef(null);
@@ -23,18 +23,36 @@ function Input({ name, label, ...rest }) {
     });
   }, [fieldName, registerField]);
   return (
-    <>
-      {label && <Text>{label}</Text>}
-      <TextInput style={styles.container} ref={inputRef} defaultValue={defaultValue} {...rest} />
-    </>
+    <View style={{
+      flexDirection:'row', marginLeft:10,
+      justifyContent:'space-between', alignItems:'center',
+      backgroundColor:'orange', margin:5, 
+      borderRadius:10, borderWidth:1, borderColor:'black'
+    }}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <TextInput style={styles.input} placeholder={`Insira ${label}`} ref={inputRef} defaultValue={defaultValue} {...rest} />
+    </View>
   );
 }
 const styles = StyleSheet.create({
-  container:{
-    borderWidth:2, borderColor:"black", borderRadius:50,
+  input:{
+    borderWidth:2, borderColor:"black", borderRadius:10,
     textAlign:'center',
-    height:70,
-    margin:5
+    backgroundColor:'white',
+    color:'black',
+    height:60,
+    // margin:5,
+    width:'60%'
+  },
+  label: {
+    borderColor:'red',borderWidth:1,width:'40%',
+    textAlign:'center',
+    backgroundColor:'orange',
+    fontSize:20,
+    // marginLeft:40, 
+    color:'white',
+    textShadowColor:"black",
+    textShadowOffset: {width: 1, height:1}, textShadowRadius:5,
   }
 })
 
