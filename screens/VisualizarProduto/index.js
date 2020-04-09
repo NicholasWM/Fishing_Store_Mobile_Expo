@@ -15,6 +15,7 @@ const add = require('../../assets/images/add.png')
 import {date} from '../../helpers/Date'
 import {useSelector, useDispatch} from 'react-redux'
 import {getHistoryStockById } from '../../store/fetchActions'
+import {getImage} from '../../helpers/Image/index'
 
 export default function AdicionarEstoqueScreen({route, navigation}){
     const {imagem, id} = route.params
@@ -43,7 +44,7 @@ export default function AdicionarEstoqueScreen({route, navigation}){
         <>
             <Image 
                 style={styles.imagemProduto}
-                source={{ uri: `${baseURL}/files/${imagem}` }}>
+                source={getImage(imagem)}>
             </Image>
             <FlatList
                 keyExtractor={(item, index)=> String(index)}
