@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 
 import {baseURL} from '../../services/api'
 import styles from './Style'
@@ -12,16 +12,17 @@ import {
 } from 'react-native';
 const edit = require('../../assets/images/edit.png')
 const add = require('../../assets/images/add.png')
-import api from '../../services/api'
 import {date} from '../../helpers/Date'
+import {useSelector, useDispatch} from 'react-redux'
+import {getHistoryStockById } from '../../store/fetchActions'
 
 export default function AdicionarEstoqueScreen({route, navigation}){
     const {imagem, id} = route.params
-    const [estoque, setEstoque] = useState([])
+    const dispatch = useDispatch()
+    const estoque = useSelector(({estoque}) => estoque.selectedProduct)
     useEffect(()=>{
-        api.get(`/estoque/${id}/registros`)
-            .then(({data})=> setEstoque(data))
-    },[])
+        dispatch(getHistoryStockById(id))
+    },[dispatch])
 
     const registro = ({item}) => (
         <View style={item.modo == 'entrada' ? {...styles.registerContainer , flexDirection:'row-reverse', borderColor:'green'}:styles.registerContainer}>
