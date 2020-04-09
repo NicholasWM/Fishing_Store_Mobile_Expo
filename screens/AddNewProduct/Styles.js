@@ -1,36 +1,41 @@
 import {StyleSheet} from 'react-native'
 import {testeStyle, colorPallet} from '../../helpers/Style'
 export default StyleSheet.create({
-    container:{...testeStyle,flex:1, alignContent:'center', borderColor:'red', borderWidth:3},
+    container:{
+        flex:1,
+        alignContent:'center',
+        margin:10
+    },
     buttonGaleryPhotos:{
-        ...testeStyle,
-         borderColor: 'black', borderWidth:2, borderRadius:50,
-         width:"45%",
-         alignItems:'center',
-         justifyContent:'center',
-         margin:2,
-         height:50,
-         backgroundColor: colorPallet[7]
+        borderColor: 'black', borderWidth:2,
+        height:98,        
+        justifyContent:'center',
+        alignItems:'center',
+        width: 170,
+        backgroundColor: colorPallet[7]
     },
     textButtonGaleryPhotos:{
-        ...testeStyle,
         textAlign:'center',
-        color:colorPallet[0]
-
+        color:colorPallet[0],
+        width:'80%'
     },
     boxSelectionPhotos:{
-        ...testeStyle,
-        flexDirection:'row',
-        justifyContent:'center'
+        flexDirection:'column',
+        justifyContent:'space-evenly',
+        marginLeft:2
     },
-    selectedImage:{width: "100%", height:200,flex:0.1,resizeMode: "contain"},
+    selectedImage:{
+        borderColor: 'black', borderWidth:2,
+        width: "47%",
+        resizeMode:'contain',
+        height:200,
+    },
     submitButtonForm:{
         backgroundColor: colorPallet[7],
         borderRadius: 25,
         margin: 5,
     },
     textoSubmitButtonForm:{
-        color: colorPallet[7]
+        color: colorPallet[7],
     }
-
 })
