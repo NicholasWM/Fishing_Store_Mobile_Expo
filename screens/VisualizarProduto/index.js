@@ -52,7 +52,7 @@ export default function AdicionarEstoqueScreen({route, navigation}){
             />
             <View style={styles.opcoes}>
                 <View style={styles.opcoesEstoque}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('RegistrosProduto',route.params)} style={styles.botaoEstoque}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('EditarProduto',route.params)} style={styles.botaoEstoque}>
                         <Image style={styles.botaoIcon} source={edit}/>
                         <Text style={styles.botaoIconDesc}>Editar</Text> 
                     </TouchableOpacity>
