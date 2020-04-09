@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, View, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {getProductsByCategory, setSearch, activateSearchAction, deactivateSearchAction } from '../../store/fetchActions'
 
 import DrawerTab from '../../components/DrawerTab'
 import SearchBar from '../../components/SearchBar'
@@ -14,8 +13,7 @@ import HistoricoEstoqueScreen from '../../screens/HistoricoEstoque'
 import AddNewProductScreen from '../../screens/AddNewProduct'
 import VisualizarProduto from '../../screens/VisualizarProduto'
 import AlterarEstoque from '../../screens/AlterarEstoque'
-import RegistrosProduto from '../../screens/RegistrosProduto'
-import { useSelector, useDispatch } from 'react-redux';
+import EditarProduto from '../../screens/EditarProduto'
 
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -24,7 +22,6 @@ const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Estoque';
 
 function EstoqueNavigator({navigation, route}){
-    const dispatch = useDispatch()
     navigation.setOptions({ headerTitle: () => (
         <View style={{marginTop:2, height:"100%", width:Dimensions.get('window').width - Dimensions.get('window').width/11, borderColor:'green', padding: 5,borderWidth:2, flexDirection: 'row', justifyContent: 'space-between',alignItems:'center'}}>
             <DrawerTab 
@@ -57,7 +54,7 @@ function EstoqueNavigator({navigation, route}){
                 }}
             />
             <BottomTab.Screen
-            name="HistoricoP"
+            name="Historico"
             component={HistoricoEstoqueScreen}
             options={{
                 title: 'Historico',
@@ -95,14 +92,42 @@ export default function StackEstoque(props) {
     return (
         <RootStack.Navigator mode='modal'>
             <RootStack.Screen 
-                options={{headerShown:false}}
+                options={{
+                    headerShown:false,
+                }}
                 name='EstoqueNavigation'
-                component={MainStackScreen}/>
-            <RootStack.Screen name="AlterarEstoque" component={AlterarEstoque}/>
-            <RootStack.Screen name="VisualizarProduto" component={VisualizarProduto}/>
-            <RootStack.Screen name="HistoricoEstoque" component={HistoricoEstoqueScreen}/>
-            <RootStack.Screen name="RegistrosProduto" component={RegistrosProduto}/>
-            <RootStack.Screen name="Camera" component={Camera}/>
+                component={MainStackScreen}
+            />
+            <RootStack.Screen name="AlterarEstoque" 
+                options={{
+                    title: "Alterar Estoque"
+                }}
+                component={AlterarEstoque}
+            />
+            <RootStack.Screen name="VisualizarProduto" 
+                options={{
+                    title: "Visualizar Produto"
+                }}
+                component={VisualizarProduto}
+            />
+            <RootStack.Screen name="HistoricoEstoque" 
+                options={{
+                    title: "Historico Estoque"
+                }}
+                component={HistoricoEstoqueScreen}
+            />
+            <RootStack.Screen name="EditarProduto" 
+                options={{
+                    title: "Editar Produto"
+                }}
+                component={EditarProduto}
+            />
+            <RootStack.Screen name="Camera" 
+                options={{
+                    title: "Camera"
+                }}
+                component={Camera}
+            />
         </RootStack.Navigator>
       );
 }
