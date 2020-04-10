@@ -20,12 +20,6 @@ const boxContent = {
     justifyContent:'flex-end'
 }
 export default StyleSheet.create({
-    box,
-    boxText:{
-        ...text,
-        marginLeft:20, 
-    },
-    boxContent,
     boxTextInput:{
         ...text,
         color:'black',
