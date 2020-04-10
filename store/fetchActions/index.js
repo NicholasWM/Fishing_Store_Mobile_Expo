@@ -45,17 +45,9 @@ export const fetchAddProduct = (nome, preco, categoria, image) =>
     
 // Stock
 export const fetchAddStock = (insertData) => 
-    {
-        // console.log({...insertData, modo:'entrada'})
-        return dispatch => api.post('/estoque/registro', {...insertData, modo:'entrada'})
-            .then(({data}) => {
-                console.log(data)
-                // Atualizar o selectedItem
-                // dispatch()
-                dispatch(addItemToSelectedStockProduct({...data, modo:'entrada', quantidade:insertData.quantidade}))
-                // Atualizar o Produto e o calculo feito em cima dele
-            })
-            .catch(console.error)}
+    dispatch => api.post('/estoque/registro', {...insertData, modo:'entrada'})
+        .then(({data}) => dispatch(addItemToSelectedStockProduct({...data, modo:'entrada', quantidade:insertData.quantidade})))
+        .catch(console.error)
 export const getHistoryStock = () => 
     dispatch => 
         api.get('/estoque')

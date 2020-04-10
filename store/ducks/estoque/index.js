@@ -13,6 +13,6 @@ export default createReducer(INITIAL_STATE,{
          state.length === 0 ? true : filtraDuplicados(state, item, "id")
     ) ],
     [setSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [...payload]}),
-    [addItemToSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [...state.selectedProduct, payload]}),
+    [addItemToSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [payload, ...state.selectedProduct]}),
 })
 
