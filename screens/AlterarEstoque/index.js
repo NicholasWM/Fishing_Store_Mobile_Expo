@@ -37,7 +37,7 @@ export default function AlterarEstoqueScreen({route, navigation}){
             </Form>
 
             <TouchableOpacity style={styles.submitInput} onPress={() => formRef.current.submitForm()}>
-                <Image style={{height:70, width:"50%", borderRadius:20}} source={getImage(imagem)}/>
+                {imagem &&(<Image style={{height:70, width:"50%", borderRadius:20}} source={getImage(imagem)}/>)}
                 <Text style={{marginRight:'3%', fontSize:25, color:"white", textTransform:'uppercase'}}>Adicionar</Text>
             </TouchableOpacity>
             <Text style={styles.textCategoria}>{categoria}</Text>

@@ -44,6 +44,7 @@ export default function HistoricoEstoqueScreen({navigation}){
     )}
     return (
         <>
+        <Text>{historyStock?"":JSON.stringify(historyStock)}</Text>
             <FlatList
                 style={{borderColor:'red', borderWidth:2}}
                 data={historyStock}
