@@ -43,7 +43,7 @@ export default function EstoqueScreen({navigation}){
         <View style={styles.container}>
             <SafeAreaView style={styles.scrollProdutosContainer}>
                 <FlatList
-                    data={produtos}
+                    data={produtos.length ? produtos : []}
                     renderItem={({ item }) => renderCategoria(item)}
                     keyExtractor={({categoria}) => categoria}
                     style={styles.scrollProdutos}
