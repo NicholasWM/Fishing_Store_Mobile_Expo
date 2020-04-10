@@ -21,18 +21,21 @@ const boxContent = {
 }
 export default StyleSheet.create({
     boxTextInput:{
+        ...testeStyle,
         ...text,
-        color:'black',
+        width:120, height:70,
+        color:'black',fontSize:12,
+        textAlign:'center'
     },
     boxTextContent:{
         ...boxContent,
         ...text,
         textAlign:'center',
         textAlignVertical:'center',
-        backgroundColor:'#F50909',
+        backgroundColor:'#B20404',
 
     },
     boxContainerInput:{
-        ...box, backgroundColor:'white'
+        ...box, backgroundColor:'white',
     }
 })

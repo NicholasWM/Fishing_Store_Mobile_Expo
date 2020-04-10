@@ -1,9 +1,11 @@
 import { createReducer, createAction } from '@reduxjs/toolkit'
+import {filtraDuplicados} from '../../helpers'
 const INITIAL_STATE = []
 
 export const addProducts = createAction("ADD_PRODUCTS")
 export const addProduct = createAction("ADD_PRODUCT")
 export const editProduct = createAction("EDIT_PRODUCT")
+export const updateNumberOfUnits = createAction("UPDATE_NUMBER_OF_UNITS")
 
 export default createReducer(INITIAL_STATE, {
     // [addProducts.type]: (state, {payload}) => state.length == 0?[...payload]:[...state, ...payload],
@@ -33,6 +35,13 @@ export default createReducer(INITIAL_STATE, {
         }
         return [...new_state]
     },
-    // []: (state, action) =>  [...state],
+    [updateNumberOfUnits.type]:
+     (state, {payload}) => 
+        state.map(categoria => ({
+            ...categoria , 
+            produtos: categoria.produtos.map(produto=>
+                        produto.id == payload.id ? ({...produto, quantidade:Number(produto.quantidade)+Number(payload.quantidade)}):produto
+            )})
+        ),
 })
 

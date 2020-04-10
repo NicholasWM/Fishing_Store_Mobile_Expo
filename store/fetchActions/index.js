@@ -1,8 +1,10 @@
 import api from '../../services/api'
-import { addProducts, addProduct } from '../ducks/produtos'
+import { addProducts, addProduct, updateNumberOfUnits } from '../ducks/produtos'
 import { addStockData,
          addStockMultipleData,
-         setSelectedStockProduct,addItemToSelectedStockProduct
+         setSelectedStockProduct,
+         addItemToSelectedStockProduct,
+         
 } from '../ducks/estoque'
 
 import { 
@@ -44,18 +46,15 @@ export const fetchAddProduct = (nome, preco, categoria, image) =>
         }
     
 // Stock
-export const fetchAddStock = (insertData) => 
-    {
-        // console.log({...insertData, modo:'entrada'})
-        return dispatch => api.post('/estoque/registro', {...insertData, modo:'entrada'})
+export const fetchAddStock = ({quantidade, custo, produto_id}) => 
+    dispatch => 
+        api.post('/estoque/registro', {produto_id, quantidade, custo, modo:'entrada'})
             .then(({data}) => {
-                console.log(data)
-                // Atualizar o selectedItem
-                // dispatch()
-                dispatch(addItemToSelectedStockProduct({...data, modo:'entrada', quantidade:insertData.quantidade}))
-                // Atualizar o Produto e o calculo feito em cima dele
+                console.log('DATA >>> ', data)
+                dispatch(updateNumberOfUnits({quantidade:data.quantidade, id:produto_id}))
+                dispatch(addItemToSelectedStockProduct(data))
             })
-            .catch(console.error)}
+            .catch(console.error)
 export const getHistoryStock = () => 
     dispatch => 
         api.get('/estoque')
