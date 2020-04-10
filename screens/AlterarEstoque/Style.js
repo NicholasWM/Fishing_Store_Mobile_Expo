@@ -1,12 +1,21 @@
 import {testeStyle} from '../../helpers/Style'
 import { StyleSheet } from 'react-native'
-
+const text = {
+    margin:5, height:40,
+    borderColor:'black', borderWidth:2, borderRadius:20,
+    textAlign:'center', textAlignVertical:'center', fontSize:20,
+    color:'white',
+    textShadowColor:"black", 
+    textShadowOffset: {width: 1, height:-1},
+    textShadowRadius:6
+}
 export default StyleSheet.create({
     form:{
         ...testeStyle,
         flex:1.2,
         alignItems:'center',
-        justifyContent:'center'
+        padding:10,
+        justifyContent:'flex-start'
     },
     historico:{
         ...testeStyle,
@@ -37,12 +46,14 @@ export default StyleSheet.create({
     submitInput:{
         ...testeStyle,
         flexDirection:'row',
-        height:60,
+        height:80,
         width:"90%",
         alignItems:'center',
-        justifyContent:'center',
+        justifyContent:'space-between',
         borderColor:'orange', borderWidth:5,
+        borderRadius:25,
         marginBottom:20,
+        backgroundColor:'black'
     },
     submitInputText:{
         ...testeStyle,
@@ -50,5 +61,20 @@ export default StyleSheet.create({
         alignItems:'center',
         textAlign:'center',
         fontSize:20
+    },
+    textCategoria: {
+        ...text,
+        backgroundColor:'#FFB800',
+        width:"90%",
+    },
+    textNomeProduto: {
+        ...text,
+        backgroundColor:'#047EB2',
+        width:"80%",
+    },
+    textPreco: {
+        ...text,
+        backgroundColor:'#07FF02',
+        width:"70%",
     },
 })
