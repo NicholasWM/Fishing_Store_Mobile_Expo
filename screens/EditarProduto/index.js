@@ -1,31 +1,44 @@
 
-import React, { useEffect } from 'react';
+import React, { useState ,useEffect, useRef } from 'react';
 import {
-    Text, View, Image, TouchableOpacity
+    Text, Image, TouchableOpacity
 } from 'react-native';
-import styles from './Style'
-import {useSelector, useDispatch} from 'react-redux'
 
+import { useDispatch } from 'react-redux'
 import { fetchAddStock } from '../../store/fetchActions'
 
-import {getImage} from '../../helpers/Image/index'
+import { Form } from '@unform/mobile';
+import EditInput from '../../components/EditInput';
+import EditImage from '../../components/EditImage';
+
+import { getImage } from '../../helpers/Image/index'
+
+import styles from './Style'
 
 export default function AlterarEstoqueScreen({route, navigation}){
     const dispatch = useDispatch()
-
-    const estoque = useSelector(({estoque}) => estoque.selectedProduct)
-    
-    // useEffect(()=>{
-    //     dispatch(getHistoryStockById(id))
-    // },[dispatch])
-    const handleSubmit = ()=> dispatch(fetchAddStock(({quantidade, custo, produto_id:id})))
+    const [selectedImage, setSelectedImage] = useState('');
+    const {imagem, categoria, nome, preco} = route.params
+    const imagemAtual = getImage(imagem)
+    useEffect(()=>{
+        setSelectedImage(imagemAtual)
+    },[])
+    const formRef = useRef(null);
+ 
+    const handleSubmit = ()=> console.log("Não Implementado")
     return (
         <>
+            <EditImage navigation={navigation} image={selectedImage} setImage={setSelectedImage}/>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+                <EditInput label={nome} name="nome"/>
+                <EditInput reverseStyle={true} label={`${preco} reais`} name="preco"/>
+                <EditInput label={categoria} name="categoria"/>
+            </Form>
             <TouchableOpacity style={styles.box}>
-                <Text style={styles.boxText}>Alterar Imagem</Text>
+                <Text style={styles.boxText}>Alterar</Text>
                 <Image 
-                    style={styles.boxImage}
-                    source={getImage(route.params.imagem)}/>
+                    style={styles.boxContent}
+                    source={selectedImage}/>
             </TouchableOpacity>
         </>
     )
