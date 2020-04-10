@@ -50,8 +50,9 @@ export const fetchAddStock = ({quantidade, custo, produto_id}) =>
     dispatch => 
         api.post('/estoque/registro', {produto_id, quantidade, custo, modo:'entrada'})
             .then(({data}) => {
+                console.log('DATA >>> ', data)
                 dispatch(updateNumberOfUnits({quantidade:data.quantidade, id:produto_id}))
-                dispatch(addItemToSelectedStockProduct({...data, modo:'entrada', quantidade:quantidade}))
+                dispatch(addItemToSelectedStockProduct(data))
             })
             .catch(console.error)
 export const getHistoryStock = () => 

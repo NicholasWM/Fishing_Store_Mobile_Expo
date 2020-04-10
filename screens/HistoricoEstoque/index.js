@@ -9,15 +9,14 @@ import { Text,
         ImageBackground
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
-
+import {getImage} from '../../helpers/Image'
 import { getHistoryStock } from '../../store/fetchActions'
 import { setSearch, activateSearchAction } from '../../store/fetchActions'
-import {baseURL} from '../../services/api'
 import styles from './Styles'
 import {date} from '../../helpers/Date'
 export default function HistoricoEstoqueScreen({navigation}){
 
-    const historyStock = useSelector(({estoque}) => estoque)
+    const historyStock = useSelector(({estoque}) => estoque.all)
     const dispatch = useDispatch()
     useEffect(()=> 
         navigation.addListener('focus', () => {
@@ -37,18 +36,20 @@ export default function HistoricoEstoqueScreen({navigation}){
                 <Text style={modo == 'entrada'?styles.modoEntrada:styles.modoSaida}>{modo}</Text>
                 <Text style={styles.textItemContainer}>{preco} reais</Text>
             </View>
-            <ImageBackground style={ styles.dataItemSecondContainer } blurRadius={5} borderRadius={22} source={{ uri: `${baseURL}/files/${produto.imagem}` }}>
+            <ImageBackground style={ styles.dataItemSecondContainer } blurRadius={5} borderRadius={22} source={getImage(produto.imagem)}>
                 <Text style={styles.textItemContainerWhite}>{produto.nome}</Text>
                 <Text style={styles.textItemContainerWhite}>{quantidade} unidades</Text>
             </ImageBackground>
         </View>
     )}
     return (
-        <FlatList
-            style={{borderColor:'red', borderWidth:2}}
-            data={historyStock}
-            renderItem={({item}) => stockHistoryItem(item)}
-            keyExtractor={(item, index)=> String(index)}
-        />
+        <>
+            <FlatList
+                style={{borderColor:'red', borderWidth:2}}
+                data={historyStock}
+                renderItem={({item}) => stockHistoryItem(item)}
+                keyExtractor={(item, index)=> String(index)}
+            />
+        </>
     )
 }

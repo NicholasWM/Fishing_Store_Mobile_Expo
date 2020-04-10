@@ -8,11 +8,23 @@ export const setSelectedStockProduct = createAction("SET_SELECTED_STOCK_PRODUCT"
 export const addItemToSelectedStockProduct = createAction("ADD_ITEM_TO_SELECTED_PRODUCT")
 
 export default createReducer(INITIAL_STATE,{
-    [addStockData.type]: (state, {payload}) => state.length == 0 ?[...payload]:[...state, ...payload ],
-    [addStockMultipleData.type]: (state, {payload}) => [...state, ...payload.filter(item =>
-         state.length === 0 ? true : filtraDuplicados(state, item, "id")
-    ) ],
+    [addStockData.type]: (state, {payload}) => state.length == 0 ?[...payload]:[ ...payload, ...state ],
+    [addStockMultipleData.type]: (state, {payload}) => {
+        // console.log("PP >>>> ", payload.filter(item => 
+        //         state.length === 0 ? true:filtraDuplicados(state, item, "id")
+        //     ));
+        
+        // console.log(JSON.stringify())
+        return {...state, all: payload.filter(item =>
+            state.length === 0 ? true : filtraDuplicados(state, item, "id")
+       ) }
+    },
     [setSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [...payload]}),
-    [addItemToSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [payload, ...state.selectedProduct]}),
+    [addItemToSelectedStockProduct.type]: (state, {payload}) => {
+        // console.log('Payload >>> ', payload)
+        // console.log('Rturn >>> ', JSON.stringify(state.all ? [payload,...state.all]:[]))
+        const all = state.all ? [payload,...state.all]:[]
+        return {all:[...all], selectedProduct: [payload, ...state.selectedProduct]}
+    },
 })
 
