@@ -17,21 +17,21 @@ import store from './store'
 import useLinking from './navigation/useLinking';
 
 import EstoqueNavigation from './navigation/EstoqueNavigation'
-import StackButtomTabNavigator from './navigation/BottomTabNavigator'
+import ComprasNavigation from './navigation/ComprasNavigation'
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem
-        label="Close drawer"
+	  {/* <DrawerItem
+	  	label="Close drawer"
         onPress={() => props.navigation.closeDrawer()}
       />
       <DrawerItem
         label="Toggle drawer"
         onPress={() => props.navigation.toggleDrawer()}
-      />
+      /> */}
     </DrawerContentScrollView>
   );
 }
@@ -75,17 +75,15 @@ export default function App(props) {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <Provider store={store}>
             <NavigationContainer ref={containerRef} >
-                
-              <Drawer.Navigator 
+              <Drawer.Navigator
                 initialRouteName="Estoque"
                 drawerContent={props=> CustomDrawerContent(props)}
               >
-                  <Drawer.Screen name="Home" component={StackButtomTabNavigator} />
+                  <Drawer.Screen name="Compras" component={ComprasNavigation} />
                   <Drawer.Screen name="Estoque" component={EstoqueNavigation} />
               </Drawer.Navigator>
             </NavigationContainer>
           </Provider>
-
         </View>
     );
   }

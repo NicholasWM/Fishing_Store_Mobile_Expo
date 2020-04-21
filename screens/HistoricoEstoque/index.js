@@ -18,7 +18,7 @@ export default function HistoricoEstoqueScreen({navigation}){
 
     const historyStock = useSelector(({estoque}) => estoque.all)
     const dispatch = useDispatch()
-    useEffect(()=> 
+    useEffect(()=>
         navigation.addListener('focus', () => {
             dispatch(activateSearchAction())
             dispatch(setSearch('estoque'))
