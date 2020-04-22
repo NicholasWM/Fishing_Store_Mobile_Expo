@@ -32,7 +32,7 @@ export default StyleSheet.create({
         ...modo, color:"green",
     },
     modoSaida:{
-        ...modo, color:'red' 
+        ...modo, color:'red'
     },
     stockItemContainerEntrada:{
         ...stockItemContainer,
@@ -47,7 +47,8 @@ export default StyleSheet.create({
         flex:0.9,
         resizeMode: "cover",
         justifyContent: "center",
-        padding:10
+		padding:10,
+		backgroundColor:'#252525',
+		borderRadius:22
     }
-
 })

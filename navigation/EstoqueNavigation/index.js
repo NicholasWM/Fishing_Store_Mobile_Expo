@@ -24,17 +24,17 @@ const INITIAL_ROUTE_NAME = 'Estoque';
 function EstoqueNavigator({navigation, route}){
     navigation.setOptions({ headerTitle: () => (
         <View style={{marginTop:2, height:"100%", width:Dimensions.get('window').width - Dimensions.get('window').width/11, borderColor:'green', padding: 5,borderWidth:2, flexDirection: 'row', justifyContent: 'space-between',alignItems:'center'}}>
-            <DrawerTab 
+            <DrawerTab
                 route={route}
                 navigation={navigation}
                 INITIAL_ROUTE_NAME={INITIAL_ROUTE_NAME}
             />
             <SearchBar/>
         </View>
-        ) 
+        )
     });
     return (
-        <BottomTab.Navigator 
+        <BottomTab.Navigator
             initialRouteName={INITIAL_ROUTE_NAME}
             tabBarOptions={{
                 activeTintColor: 'orange',
@@ -46,7 +46,7 @@ function EstoqueNavigator({navigation, route}){
                 options={{
                     title: 'Estoque',
                     tabBarIcon: ({focused}) => (
-                        <IconImage 
+                        <IconImage
                             focused={focused}
                             source={require('../../assets/images/stack.png')}
                         />
@@ -59,7 +59,7 @@ function EstoqueNavigator({navigation, route}){
             options={{
                 title: 'Historico',
                 tabBarIcon: ({focused}) => (
-                    <IconImage 
+                    <IconImage
                         focused={focused}
                         source={require('../../assets/images/activity-history.png')}
                     />
@@ -71,7 +71,7 @@ function EstoqueNavigator({navigation, route}){
             options={{
                 title: 'Novo Produto',
                 tabBarIcon: ({focused}) => (
-                    <IconImage 
+                    <IconImage
                         focused={focused}
                         source={require('../../assets/images/activity-history.png')}
                     />
@@ -91,38 +91,38 @@ function MainStackScreen(){
 export default function StackEstoque(props) {
     return (
         <RootStack.Navigator mode='modal'>
-            <RootStack.Screen 
+            <RootStack.Screen
                 options={{
                     headerShown:false,
                 }}
                 name='EstoqueNavigation'
                 component={MainStackScreen}
             />
-            <RootStack.Screen name="AlterarEstoque" 
+            <RootStack.Screen name="AlterarEstoque"
                 options={{
                     title: "Alterar Estoque"
                 }}
                 component={AlterarEstoque}
             />
-            <RootStack.Screen name="VisualizarProduto" 
+            <RootStack.Screen name="VisualizarProduto"
                 options={{
                     title: "Visualizar Produto"
                 }}
                 component={VisualizarProduto}
             />
-            <RootStack.Screen name="HistoricoEstoque" 
+            <RootStack.Screen name="HistoricoEstoque"
                 options={{
                     title: "Historico Estoque"
                 }}
                 component={HistoricoEstoqueScreen}
             />
-            <RootStack.Screen name="EditarProduto" 
+            <RootStack.Screen name="EditarProduto"
                 options={{
                     title: "Editar Produto"
                 }}
                 component={EditarProduto}
             />
-            <RootStack.Screen name="Camera" 
+            <RootStack.Screen name="Camera"
                 options={{
                     title: "Camera"
                 }}
