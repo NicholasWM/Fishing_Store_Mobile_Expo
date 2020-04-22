@@ -4,20 +4,22 @@ import { addStockData,
          addStockMultipleData,
          setSelectedStockProduct,
          addItemToSelectedStockProduct,
-         
+
 } from '../ducks/estoque'
 
-import { 
+import {
     changeSearch, activateSearch, deactivateSearch
  } from '../ducks/search'
+
+import {setLivroCaixaData} from '../ducks/livro_caixa'
 // Products
-export const getProductsByCategory = () => 
-    dispatch => 
+export const getProductsByCategory = () =>
+    dispatch =>
         api.get('/produtos/categorias')
             .then(({data}) => dispatch(addProducts(data)))
             .catch(console.log)
 
-export const fetchAddProduct = (nome, preco, categoria, image) => 
+export const fetchAddProduct = (nome, preco, categoria, image) =>
     async dispatch => {
         function getNameImage(uri){
             let nameImage = uri.split('/')
@@ -44,10 +46,10 @@ export const fetchAddProduct = (nome, preco, categoria, image) =>
             })
             return dispatch(addProduct(response.data))
         }
-    
+
 // Stock
-export const fetchAddStock = ({quantidade, custo, produto_id}) => 
-    dispatch => 
+export const fetchAddStock = ({quantidade, custo, produto_id}) =>
+    dispatch =>
         api.post('/estoque/registro', {produto_id, quantidade, custo, modo:'entrada'})
             .then(({data}) => {
                 console.log('DATA >>> ', data)
@@ -55,27 +57,35 @@ export const fetchAddStock = ({quantidade, custo, produto_id}) =>
                 dispatch(addItemToSelectedStockProduct(data))
             })
             .catch(console.error)
-export const getHistoryStock = () => 
-    dispatch => 
+export const getHistoryStock = () =>
+    dispatch =>
         api.get('/estoque')
             .then(({data}) => dispatch(addStockMultipleData(data)))
             .catch(console.error)
-            
-export const getHistoryStockById = (produto_id) => 
-    dispatch => 
+
+export const getHistoryStockById = (produto_id) =>
+    dispatch =>
         api.get(`/estoque/${produto_id}/registros`)
             .then(({data}) => dispatch(setSelectedStockProduct(data)))
             .catch(console.error)
 
-export const setSearch = (nameDuck) => 
+export const setSearch = (nameDuck) =>
     dispatch => {
         console.log(nameDuck)
         dispatch(changeSearch(nameDuck))
     }
-export const activateSearchAction = () => 
-    dispatch => 
+export const activateSearchAction = () =>
+    dispatch =>
         dispatch(activateSearch())
-export const deactivateSearchAction = () => 
-    dispatch => 
-        dispatch(deactivateSearch())
+export const deactivateSearchAction = () =>
+    dispatch =>
+		dispatch(deactivateSearch())
+
+export const fetchLivroCaixaData = () =>
+	dispatch=>
+		api.get(`/livro_caixa/mes_atual`)
+			.then(({data}) => dispatch(setLivroCaixaData(data)))
+            .catch(console.error)
+
+
 // Others
