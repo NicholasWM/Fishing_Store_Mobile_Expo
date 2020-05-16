@@ -30,20 +30,21 @@ export default function HistoricoEstoqueScreen({navigation}){
 
     return (
         <>
-			{historyStock.length?(
+			{historyStock && historyStock.length?(
 				<FlatList
 				style={{borderColor:'red', borderWidth:2}}
 					data={historyStock}
 					renderItem={({item}) => {
 						const {modo, preco, quantidade, createdAt, produto_id, produto} = item
-						return <RegistroEntradaSaida2 modo={modo}
-						produto_id={produto_id}
+						return <RegistroEntradaSaida2
+									modo={modo}
+									produto_id={produto_id}
 									preco={preco}
 									label1_box={produto.nome}
 									label2_box={`${quantidade} unidades`}
 									nome_imagem={produto.imagem}
 									data={createdAt}
-									/>
+								/>
 								}}
 
 								keyExtractor={(item, index)=> String(index)}

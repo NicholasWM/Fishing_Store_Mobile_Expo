@@ -11,7 +11,9 @@ import {
     changeSearch, activateSearch, deactivateSearch
  } from '../ducks/search'
 
-import {setLivroCaixaData} from '../ducks/livro_caixa'
+import {setLivroCaixaRegistros, getLivroCaixaDadosCompraSeleciona} from '../ducks/livro_caixa'
+
+import {getComprasData} from '../ducks/compras'
 // Products
 export const getProductsByCategory = () =>
     dispatch =>
@@ -52,7 +54,6 @@ export const fetchAddStock = ({quantidade, custo, produto_id}) =>
     dispatch =>
         api.post('/estoque/registro', {produto_id, quantidade, custo, modo:'entrada'})
             .then(({data}) => {
-                console.log('DATA >>> ', data)
                 dispatch(updateNumberOfUnits({quantidade:data.quantidade, id:produto_id}))
                 dispatch(addItemToSelectedStockProduct(data))
             })
@@ -84,8 +85,20 @@ export const deactivateSearchAction = () =>
 export const fetchLivroCaixaData = () =>
 	dispatch=>
 		api.get(`/livro_caixa/mes_atual`)
-			.then(({data}) => dispatch(setLivroCaixaData(data)))
+			.then(({data}) => dispatch(setLivroCaixaRegistros(data)))
             .catch(console.error)
 
+export const fetchComprasData = () =>
+	dispatch =>
+		api.get('/compras')
+			.then(({data}) => dispatch(getComprasData(data)))
+            .catch(console.error)
 
+export const fetchLivroCaixaDadosCompraSelecionada = (id) =>
+	dispatch =>{
+		console.log(id)
+		return api.get(`/livro_caixa/resumo/${id}/compra`)
+				.then(({data}) => dispatch(getLivroCaixaDadosCompraSeleciona(data)))
+				.catch(console.error)
+}
 // Others
