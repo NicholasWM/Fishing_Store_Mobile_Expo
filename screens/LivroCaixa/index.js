@@ -16,7 +16,7 @@ import styles from './Styles'
 
 
 export default function LivroCaixa({navigation}){
-	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa)
+	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa.registros)
 	const dispatch = useDispatch()
 	useEffect(()=>{
 		dispatch(fetchLivroCaixaData())
