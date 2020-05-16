@@ -30,7 +30,7 @@ export default function HistoricoEstoqueScreen({navigation}){
 
     return (
         <>
-			{historyStock.length?(
+			{historyStock && historyStock.length?(
 				<FlatList
 				style={{borderColor:'red', borderWidth:2}}
 					data={historyStock}
