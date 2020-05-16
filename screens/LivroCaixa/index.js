@@ -9,8 +9,11 @@ import {useSelector, useDispatch} from 'react-redux'
 
 import {fetchLivroCaixaData, deactivateSearchAction} from '../../store/fetchActions'
 import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+import ValoresCaixa from '../../components/ValoresCaixa'
 
 import styles from './Styles'
+
+
 
 export default function LivroCaixa({navigation}){
 	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa)
@@ -33,20 +36,12 @@ export default function LivroCaixa({navigation}){
 					renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco:item.valor}} /> }
 				/>
 			</View>
-			<View style={styles.valoresContainer}>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Dinheiro:</Text>
-					<Text style={styles.valorText}>10 reais</Text>
-				</View>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Crédito:</Text>
-					<Text style={styles.valorText}>220 reais</Text>
-				</View>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Débito:</Text>
-					<Text style={styles.valorText}>0 reais</Text>
-				</View>
-			</View>
+
+			<ValoresCaixa
+				credito={220}
+				dinheiro={10}
+				debito={0}
+			/>
 		</View>
 	)
 }
