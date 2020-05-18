@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet, FlatList} from 'react-native'
 const barco_imagem = require('../../assets/images/barco.png')
 const grupo_imagem = require('../../assets/images/grupo.png')
@@ -7,8 +7,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import {fetchLivroCaixaDadosCompraSelecionada} from '../../store/fetchActions'
 const {testeStyle, textShadow} = require('../../helpers/Style')
 import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+import BottomMenu from '../../components/BottomMenu'
 
 export default function VisualizarCompra({route, navigation}){
+	const [dadosPagamento, setDadosPagamento] = useState([])
 	const { id, nome, barqueiro, produtos, preco_total } = route.params
 	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa.compra_selecionada)
 	const dispatch = useDispatch()
@@ -16,7 +18,11 @@ export default function VisualizarCompra({route, navigation}){
 	useEffect(()=> {
 		dispatch(fetchLivroCaixaDadosCompraSelecionada(id))
 	},[])
-
+	useEffect(()=> {
+		if(dadosLivroCaixa.dinheiro && dadosLivroCaixa.debito && dadosLivroCaixa.credito && dadosLivroCaixa.deposito){
+			setDadosPagamento([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])
+		}
+	},[dadosLivroCaixa])
 	const Caixa = () => {
 		const styles = StyleSheet.create({
 			container:{...testeStyle},
@@ -58,11 +64,11 @@ export default function VisualizarCompra({route, navigation}){
 			{/* <Text>{JSON.stringify(route.params)}</Text> */}
 			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
 			<FlatList
-				data={[...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito]}
-				// renderItem={({item})=> <Text>{JSON.stringify(item)}</Text>}
+				data={dadosPagamento}
 				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
-				keyExtractor={(item, index)=> index}
+				keyExtractor={(item, index)=> String(index)}
 			/>
+
 			{Caixa()}
 		</View>
 	)
