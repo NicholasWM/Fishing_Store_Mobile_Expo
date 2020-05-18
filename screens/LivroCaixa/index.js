@@ -1,19 +1,16 @@
 import React, {useEffect} from 'react'
 import {
 	View,
-	Text,
-	FlatList
+	FlatList,
+	StyleSheet
 } from 'react-native'
 
 import {useSelector, useDispatch} from 'react-redux'
 
 import {fetchLivroCaixaData, deactivateSearchAction} from '../../store/fetchActions'
 import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+
 import ValoresCaixa from '../../components/ValoresCaixa'
-
-import styles from './Styles'
-
-
 
 export default function LivroCaixa({navigation}){
 	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa.registros)
@@ -26,16 +23,12 @@ export default function LivroCaixa({navigation}){
 			dispatch(deactivateSearchAction())
 	}),[navigation])
 	return (
-		<View style={{flex:1}}>
-			<Text
-				style={{fontSize:20, textAlign:'center'}}>
-					Livro Caixa</Text>
-			<View style={styles.dadosContainer}>
-				<FlatList
-					data={dadosLivroCaixa}
-					renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco:item.valor}} /> }
-				/>
-			</View>
+		<View style={styles.dadosContainer}>
+			<FlatList
+				data={dadosLivroCaixa}
+				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco:item.valor}} /> }
+				keyExtractor={(item, index)=> String(index)}
+			/>
 
 			<ValoresCaixa
 				credito={220}
@@ -45,3 +38,6 @@ export default function LivroCaixa({navigation}){
 		</View>
 	)
 }
+const styles = StyleSheet.create({
+	dadosContainer:{justifyContent:'space-evenly'},
+})
