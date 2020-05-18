@@ -1,11 +1,13 @@
 import React, {useEffect} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, FlatList} from 'react-native'
 const barco_imagem = require('../../assets/images/barco.png')
 const grupo_imagem = require('../../assets/images/grupo.png')
 import ValoresCaixa from '../../components/ValoresCaixa'
 import {useSelector, useDispatch} from 'react-redux'
 import {fetchLivroCaixaDadosCompraSelecionada} from '../../store/fetchActions'
 const {testeStyle, textShadow} = require('../../helpers/Style')
+import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+
 export default function VisualizarCompra({route, navigation}){
 	const { id, nome, barqueiro, produtos, preco_total } = route.params
 	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa.compra_selecionada)
@@ -17,7 +19,7 @@ export default function VisualizarCompra({route, navigation}){
 
 	const Caixa = () => {
 		const styles = StyleSheet.create({
-			container:{height:"100%", ...testeStyle},
+			container:{...testeStyle},
 			itemContainer: {
 				flexDirection:'row', alignItems:'center', justifyContent:'space-around',
 				backgroundColor:"#D60800", padding:20,
@@ -53,8 +55,14 @@ export default function VisualizarCompra({route, navigation}){
 	}
 	return (
 		<View style={{height:'100%', ...testeStyle}}>
-			{/* <Text>{JSON.stringify(route.params)}</Text>
-			<Text>{JSON.stringify(dadosLivroCaixa)}</Text> */}
+			{/* <Text>{JSON.stringify(route.params)}</Text> */}
+			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
+			<FlatList
+				data={[...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito]}
+				// renderItem={({item})=> <Text>{JSON.stringify(item)}</Text>}
+				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
+				keyExtractor={(item, index)=> index}
+			/>
 			{Caixa()}
 		</View>
 	)
