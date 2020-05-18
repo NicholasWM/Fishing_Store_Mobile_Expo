@@ -23,7 +23,6 @@ export default function ValoresCaixa({dinheiro, credito, debito}){
 
 const styles = StyleSheet.create({
 	valoresContainer:{
-		flex: 0.3,
 		justifyContent:'space-around',
 		borderBottomWidth: 3,
 		borderColor: 'black'
