@@ -17,14 +17,14 @@ import styles from './Style'
 
 export default function AlterarEstoqueScreen({route, navigation}){
     const dispatch = useDispatch()
-    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null);
     const {imagem, categoria, nome, preco} = route.params
     const imagemAtual = getImage(imagem)
     useEffect(()=>{
         setSelectedImage(imagemAtual)
     },[])
     const formRef = useRef(null);
- 
+
     const handleSubmit = ()=> console.log("Não Implementado")
     return (
         <>
@@ -36,7 +36,7 @@ export default function AlterarEstoqueScreen({route, navigation}){
             </Form>
             <TouchableOpacity style={styles.box}>
                 <Text style={styles.boxText}>Alterar</Text>
-                <Image 
+                <Image
                     style={styles.boxContent}
                     source={selectedImage}/>
             </TouchableOpacity>
