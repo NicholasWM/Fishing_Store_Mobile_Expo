@@ -1,19 +1,14 @@
-
 import React, {useEffect} from 'react';
 
-import {baseURL} from '../../services/api'
 import styles from './Style'
 import {
-    Text,
-    View,
-    TouchableOpacity,
     Image,
     FlatList
 } from 'react-native';
 
 import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+import BottomMenu from '../../components/BottomMenu'
 
-import {date} from '../../helpers/Date'
 import {useSelector, useDispatch} from 'react-redux'
 import {getHistoryStockById } from '../../store/fetchActions'
 import {getImage} from '../../helpers/Image/index'
@@ -35,23 +30,19 @@ export default function AdicionarEstoqueScreen({route, navigation}){
                 style={styles.imagemProduto}
                 source={getImage(imagem)}>
             </Image>
+
             <FlatList
                 keyExtractor={(item, index)=> String(index)}
                 renderItem={item => <RegistroEntradaSaida item={item.item} />}
                 data={estoque}
             />
-            <View style={styles.opcoes}>
-                <View style={styles.opcoesEstoque}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('EditarProduto',route.params)} style={styles.botaoEstoque}>
-                        <Image style={styles.botaoIcon} source={edit}/>
-                        <Text style={styles.botaoIconDesc}>Editar</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>navigation.navigate('AlterarEstoque',route.params)} style={styles.botaoEstoque}>
-                        <Image style={styles.botaoIcon} source={add}/>
-                        <Text style={styles.botaoIconDesc}>Adicionar ao Estoque</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+
+			<BottomMenu
+				listButtons={[
+					{onPress: ()=>navigation.navigate('EditarProduto',route.params), text: 'Editar', image: edit},
+					{onPress: ()=>navigation.navigate('AlterarEstoque',route.params), text: 'Adicionar ao Estoque', image: add}
+				]}
+			/>
         </>
     )
 }

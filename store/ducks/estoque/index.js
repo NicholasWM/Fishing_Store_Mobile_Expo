@@ -10,13 +10,8 @@ export const addItemToSelectedStockProduct = createAction("ADD_ITEM_TO_SELECTED_
 export default createReducer(INITIAL_STATE,{
     [addStockData.type]: (state, {payload}) => state.length == 0 ?[...payload]:[ ...payload, ...state ],
     [addStockMultipleData.type]: (state, {payload}) => {
-        // console.log("PP >>>> ", payload.filter(item => 
-        //         state.length === 0 ? true:filtraDuplicados(state, item, "id")
-        //     ));
-        
-        // console.log(JSON.stringify())
         return {...state, all: payload.filter(item =>
-            state.length === 0 ? true : filtraDuplicados(state, item, "id")
+            state && state.length === 0  ? true : filtraDuplicados(state, item, "id")
        ) }
     },
     [setSelectedStockProduct.type]: (state, {payload}) => ({...state, selectedProduct: [...payload]}),
@@ -27,4 +22,3 @@ export default createReducer(INITIAL_STATE,{
         return {all:[...all], selectedProduct: [payload, ...state.selectedProduct]}
     },
 })
-
