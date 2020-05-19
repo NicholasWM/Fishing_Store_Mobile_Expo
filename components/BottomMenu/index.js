@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     botaoIcon:{
         alignItems:'center',
         alignSelf:'center',
-        height:40, width:40, tintColor:'#333'
+        height:40, width:40
     },
     botaoIconDesc:{
         textAlign:'center',
