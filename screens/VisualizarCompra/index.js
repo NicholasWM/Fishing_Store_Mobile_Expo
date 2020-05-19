@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, FlatList} from 'react-native'
+import {View, Text, StyleSheet, FlatList, Image} from 'react-native'
 const barco_imagem = require('../../assets/images/barco.png')
 const grupo_imagem = require('../../assets/images/grupo.png')
 const stack = require('../../assets/images/stack.png')
@@ -61,10 +61,30 @@ export default function VisualizarCompra({route, navigation}){
 			</View>
 		)
 	}
+	const dadoComprador = () => {
+		const styles = StyleSheet.create({
+			container: {flexDirection:'row', width: '100%', justifyContent:'space-around', alignItems:'center', marginTop:5},
+			dados:{flexDirection:'row', alignItems:'center', padding:20, borderColor: 'black', borderWidth:1, borderRadius:25, backgroundColor:'#FFB800'},
+			dadoText:{...textShadow, color: '#FFF', fontSize:20}
+		})
+		return (
+			<View style={styles.container}>
+				<View style={styles.dados}>
+					<Image source={barco_imagem}/>
+					<Text style={styles.dadoText}>{barqueiro}</Text>
+				</View>
+				<View style={styles.dados}>
+					<Image source={grupo_imagem}/>
+					<Text style={styles.dadoText}>{nome}</Text>
+				</View>
+			</View>
+		)
+	}
 	return (
 		<View style={{height:'100%', ...testeStyle}}>
 			{/* <Text>{JSON.stringify(route.params)}</Text> */}
 			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
+			{dadoComprador()}
 			<FlatList
 				data={dadosPagamento}
 				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
