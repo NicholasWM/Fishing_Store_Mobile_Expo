@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet, FlatList} from 'react-native'
 const barco_imagem = require('../../assets/images/barco.png')
 const grupo_imagem = require('../../assets/images/grupo.png')
+const stack = require('../../assets/images/stack.png')
+const pagar = require('../../assets/images/pagar.png')
 import ValoresCaixa from '../../components/ValoresCaixa'
 import {useSelector, useDispatch} from 'react-redux'
 import {fetchLivroCaixaDadosCompraSelecionada} from '../../store/fetchActions'
@@ -68,8 +70,13 @@ export default function VisualizarCompra({route, navigation}){
 				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
 				keyExtractor={(item, index)=> String(index)}
 			/>
-
 			{Caixa()}
+			<BottomMenu
+				listButtons={[
+					{onPress: ()=>navigation.navigate('Editar Compra',route.params), text: 'Editar', image: stack},
+					{onPress: ()=>navigation.navigate('Pagar Compra',route.params), text: 'Pagar', image: pagar},
+				]}
+			/>
 		</View>
 	)
 }
