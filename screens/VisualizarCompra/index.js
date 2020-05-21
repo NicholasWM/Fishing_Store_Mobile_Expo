@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {View, Text, StyleSheet, FlatList, ImageBackground, Image} from 'react-native'
-const barco_imagem = require('../../assets/images/barco.png')
-const grupo_imagem = require('../../assets/images/grupo.png')
 const stack = require('../../assets/images/stack.png')
 const pagar = require('../../assets/images/pagar.png')
 import ValoresCaixa from '../../components/ValoresCaixa'
@@ -10,6 +8,7 @@ import {fetchLivroCaixaDadosCompraSelecionada} from '../../store/fetchActions'
 const {testeStyle, textShadow} = require('../../helpers/Style')
 const {getImage} = require('../../helpers/Image')
 import RegistroEntradaSaida from '../../components/RegistroEntradaSaida'
+import DadoFrete from '../../components/DadoFrete'
 import BottomMenu from '../../components/BottomMenu'
 
 export default function VisualizarCompra({route, navigation}){
@@ -26,61 +25,7 @@ export default function VisualizarCompra({route, navigation}){
 			setDadosPagamento([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])
 		}
 	},[dadosLivroCaixa])
-	const Caixa = () => {
-		const styles = StyleSheet.create({
-			container:{...testeStyle},
-			itemContainer: {
-				flexDirection:'row', alignItems:'center', justifyContent:'space-around',
-				backgroundColor:"#D60800", padding:20,
-				borderColor:'black', borderWidth:2,
-				width:"50%", marginTop:1
-			},
-			containerResumoText: {
-				color:'#FFF', fontSize: 20,...textShadow
-			},
-			containerResumo: {
-				width:"100%",
-				flexDirection:'row'
-			}
-		})
-		return (
-			<View style={styles.container}>
-				<ValoresCaixa
-					credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-					debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-					dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				/>
 
-				<View style={styles.containerResumo}>
-					<View style={styles.itemContainer}>
-						<Text style={styles.containerResumoText}>Total: {dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading"}</Text>
-					</View>
-					<View style={styles.itemContainer}>
-						<Text style={styles.containerResumoText}>Pago: {dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.pago: "loading"}</Text>
-					</View>
-				</View>
-			</View>
-		)
-	}
-	const dadoComprador = () => {
-		const styles = StyleSheet.create({
-			container: {flexDirection:'row', width: '100%', justifyContent:'space-around', alignItems:'center', marginTop:5},
-			dados:{flexDirection:'row', alignItems:'center', padding:10, borderColor: 'black', borderWidth:1, borderRadius:25, backgroundColor:'#FFB800'},
-			dadoText:{...textShadow, color: '#FFF', fontSize:16}
-		})
-		return (
-			<View style={styles.container}>
-				<View style={styles.dados}>
-					<Image source={barco_imagem}/>
-					<Text style={styles.dadoText}>{barqueiro}</Text>
-				</View>
-				<View style={styles.dados}>
-					<Image source={grupo_imagem}/>
-					<Text style={styles.dadoText}>{nome}</Text>
-				</View>
-			</View>
-		)
-	}
 	const renderProduto = (props) => {
 		const {id, nome, imagem, dados} = props
 		const preco_total = dados.reduce((pValue, value) => pValue+ value.preco_total, 0)
@@ -111,23 +56,32 @@ export default function VisualizarCompra({route, navigation}){
 			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
 			<FlatList
 				data={produtos}
-				// renderItem={({item})=> item.produtos.map(produto => (<Text>{JSON.stringify(produto)}</Text>))}
 				renderItem={({item})=> item.produtos.length ? item.produtos.map(produto => renderProduto(produto)) : (<Text style={{textAlign:'center'}}>Nenhum Produto</Text>)}
 				keyExtractor={(item, index)=> String(index)}
 				horizontal={true}
 			/>
-			{dadoComprador()}
+			<DadoFrete barqueiro={barqueiro} nome={nome}/>
 			<FlatList
 				style={{height:'25%', borderColor:'black', borderWidth:2}}
 				data={dadosPagamento}
 				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
 				keyExtractor={(item, index)=> String(index)}
 			/>
-			{Caixa()}
+			<ValoresCaixa
+				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				total={
+					{
+						total: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading",
+						pago: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.pago: "loading"
+					}
+				}
+			/>
 			<BottomMenu
 				listButtons={[
 					{onPress: ()=>navigation.navigate('Editar Compra',route.params), text: 'Editar', image: stack},
-					{onPress: ()=>navigation.navigate('Pagar Compra',route.params), text: 'Pagar', image: pagar},
+					{onPress: ()=>navigation.navigate('Pagar Compra', {barqueiro, nome, dadosLivroCaixa}), text: 'Pagar', image: pagar},
 				]}
 			/>
 		</View>
