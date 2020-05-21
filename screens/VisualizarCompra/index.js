@@ -52,7 +52,8 @@ export default function VisualizarCompra({route, navigation}){
 	}
 	return (
 		<View style={{height:'100%', ...testeStyle}}>
-			{/* <Text>{JSON.stringify(route.params)}</Text> */}
+			<Text>{JSON.stringify(route.params)}</Text>
+			{/* <Text>{JSON.stringify(dadosLivroCaixa)}</Text> */}
 			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
 			<FlatList
 				data={produtos}
@@ -81,7 +82,7 @@ export default function VisualizarCompra({route, navigation}){
 			<BottomMenu
 				listButtons={[
 					{onPress: ()=>navigation.navigate('Editar Compra',route.params), text: 'Editar', image: stack},
-					{onPress: ()=>navigation.navigate('Pagar Compra', {barqueiro, nome, dadosLivroCaixa}), text: 'Pagar', image: pagar},
+					{onPress: ()=>navigation.navigate('Pagar Compra', {id, barqueiro, nome, dadosLivroCaixa}), text: 'Pagar', image: pagar},
 				]}
 			/>
 		</View>
