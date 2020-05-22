@@ -14,11 +14,11 @@ import {getProductsByCategory, setSearch, activateSearchAction } from '../../sto
 import {useSelector, useDispatch} from 'react-redux'
 
 export default function EstoqueScreen({navigation}){
-    
-    const produtos = useSelector(({produtos})=>produtos)
-    
+
+    const produtos = useSelector(({produtos})=>produtos.estoque)
+
     const dispatch = useDispatch()
-    useEffect(()=> 
+    useEffect(()=>
       navigation.addListener('focus', () => {
         dispatch(activateSearchAction())
         dispatch(setSearch('produtos'))
