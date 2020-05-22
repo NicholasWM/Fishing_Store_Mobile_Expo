@@ -3,6 +3,8 @@ import {View, Text, TouchableOpacity} from 'react-native'
 
 import { Form } from '@unform/mobile';
 
+import { useDispatch } from 'react-redux'
+
 import Input from '../../components/Input';
 
 import DadoFrete from '../../components/DadoFrete'
@@ -12,18 +14,21 @@ import { pagarCompraAction } from '../../store/fetchActions'
 
 export default function PagarCompra({route, navigation}){
 	const {id, barqueiro, nome, dadosLivroCaixa} = route.params
-	const formRef = useRef(null);
-	const handleSubmit = ( debito, credito, dinheiro, deposito) => {
-		// dispatch(pagarCompraAction(id, modo, valor))
-        // formRef.current.clearField('nome');
-        // formRef.current.clearField('preco');
-        // formRef.current.clearField('categoria');
-		console.log('Submit')
+	const formRef = useRef(null)
+	const dispatch = useDispatch()
+	const handleSubmit = ( {debito, credito, dinheiro, deposito}) => {
+		debito && dispatch(pagarCompraAction(id, 'debito', debito))
+		credito && dispatch(pagarCompraAction(id, 'credito', credito))
+		dinheiro && dispatch(pagarCompraAction(id, 'dinheiro', dinheiro))
+		deposito && dispatch(pagarCompraAction(id, 'deposito', deposito))
+        formRef.current.clearField('debito');
+        formRef.current.clearField('credito');
+        formRef.current.clearField('dinheiro');
+        formRef.current.clearField('deposito');
 		navigation.goBack()
 	}
 	return (
 		<View>
-			<Text>{JSON.stringify(route.params)}</Text>
 			<DadoFrete barqueiro={barqueiro} nome={nome}/>
 			<Form ref={formRef} onSubmit={handleSubmit}>
 				<Input label="Dinheiro" name="dinheiro" keyboard={'numeric'}/>
