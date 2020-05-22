@@ -11,9 +11,9 @@ import {
     changeSearch, activateSearch, deactivateSearch
  } from '../ducks/search'
 
-import {setLivroCaixaRegistros, getLivroCaixaDadosCompraSeleciona} from '../ducks/livro_caixa'
+import {setLivroCaixaRegistros, getLivroCaixaDadosCompraSeleciona, pagarCompra} from '../ducks/livro_caixa'
 
-import {getComprasData} from '../ducks/compras'
+import {getComprasData, alterarEstadoCompra} from '../ducks/compras'
 // Products
 export const getProductsByCategory = () =>
     dispatch =>
@@ -101,4 +101,19 @@ export const fetchLivroCaixaDadosCompraSelecionada = (id) =>
 				.then(({data}) => dispatch(getLivroCaixaDadosCompraSeleciona(data)))
 				.catch(console.error)
 }
-// Others
+
+export const fecharCompraAction = (id) =>
+	dispatch => {
+		dispatch(alterarEstadoCompra({id, pago:1}))
+	}
+
+export const pagarCompraAction = (id, modo, valor) =>
+	dispatch =>{
+		console.log(id, modo, valor)
+		api.post(`/compras/${id}/pagar`, {valor, modo, tipo_transacao: "entrada"})
+			.then(({data}) => {
+				dispatch(pagarCompra({data, id, modo, valor}))
+				data.troco != undefined && dispatch(fecharCompraAction(id))
+			})
+			.catch(console.error)
+}

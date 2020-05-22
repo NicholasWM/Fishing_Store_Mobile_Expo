@@ -52,9 +52,6 @@ export default function VisualizarCompra({route, navigation}){
 	}
 	return (
 		<View style={{height:'100%', ...testeStyle}}>
-			<Text>{JSON.stringify(route.params)}</Text>
-			{/* <Text>{JSON.stringify(dadosLivroCaixa)}</Text> */}
-			{/* <Text>{JSON.stringify([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])}</Text> */}
 			<FlatList
 				data={produtos}
 				renderItem={({item})=> item.produtos.length ? item.produtos.map(produto => renderProduto(produto)) : (<Text style={{textAlign:'center'}}>Nenhum Produto</Text>)}
@@ -64,14 +61,14 @@ export default function VisualizarCompra({route, navigation}){
 			<DadoFrete barqueiro={barqueiro} nome={nome}/>
 			<FlatList
 				style={{height:'25%', borderColor:'black', borderWidth:2}}
-				data={dadosPagamento}
+				data={dadosLivroCaixa.dinheiro && dadosLivroCaixa.debito && dadosLivroCaixa.credito && dadosLivroCaixa.deposito && [...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito]}
 				renderItem={({item})=> <RegistroEntradaSaida item={{...item, modo: item.tipo_transacao, preco: item.valor}} />}
 				keyExtractor={(item, index)=> String(index)}
 			/>
 			<ValoresCaixa
-				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
+				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
+				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
 				total={
 					{
 						total: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading",
