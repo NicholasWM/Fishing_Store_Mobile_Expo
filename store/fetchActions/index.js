@@ -1,10 +1,9 @@
 import api from '../../services/api'
-import { addProducts, addProduct, updateNumberOfUnits } from '../ducks/produtos'
+import { addProducts, addProduct, updateNumberOfUnits, addNovaCompra, addProdutoNovaCompra,removeProdutoNovaCompra, resetNovaCompra } from '../ducks/produtos'
 import { addStockData,
          addStockMultipleData,
          setSelectedStockProduct,
          addItemToSelectedStockProduct,
-
 } from '../ducks/estoque'
 
 import {
@@ -117,3 +116,33 @@ export const pagarCompraAction = (id, modo, valor) =>
 			})
 			.catch(console.error)
 }
+
+export const adicionarNovaCompraAction = (nome, barqueiro, produtos) =>
+	dispatch =>{
+		console.log({
+			nome,
+			barqueiro,
+			produtos,
+			"pago": 0
+		})
+		api.post(`/compras`, {
+				nome,
+				barqueiro,
+				produtos,
+				"pago": 0
+			})
+		.then(({data}) => {
+			dispatch(addNovaCompra(data))
+			dispatch(resetNovaCompra())
+		})
+		.catch(console.error)
+	}
+export const adicionarProdutoNovaCompraAction = (produto) =>
+	dispatch =>{
+		dispatch(addProdutoNovaCompra(produto))
+	}
+
+	export const removerProdutoNovaCompraAction = (produto) =>
+	dispatch =>{
+		dispatch(removeProdutoNovaCompra(produto))
+	}

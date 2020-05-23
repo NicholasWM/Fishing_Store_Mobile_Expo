@@ -9,6 +9,8 @@ import CriarCompraScreen from '../../screens/CriarCompra';
 import VisualizarCompraScreen from '../../screens/VisualizarCompra';
 import EditarCompraScreen from '../../screens/EditarCompra';
 import PagarCompraScreen from '../../screens/PagarCompra';
+import SelecionarProdutosScreen from '../../screens/SelecionarProdutos';
+import AdicionarProdutosCompraScreen from '../../screens/AdicionarProdutosCompra';
 
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -104,6 +106,18 @@ export default function ComprasNavigation(props) {
 				title:"Pagar Compra"
 			}}
 			component={PagarCompraScreen} />
+	   <Stack.Screen
+			name="Selecionar Produtos"
+			options={{
+				title:"Selecionar Produtos"
+			}}
+			component={SelecionarProdutosScreen} />
+	   <Stack.Screen
+			name="Adicionar Produtos a Compra"
+			options={{
+				title:"Adicionar Produtos a Compra"
+			}}
+			component={AdicionarProdutosCompraScreen} />
      </Stack.Navigator>
     );
 }
