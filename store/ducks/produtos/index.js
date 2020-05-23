@@ -41,8 +41,14 @@ export default createReducer(INITIAL_STATE, {
 		...state,
 		estoque:state.estoque.map(categoria => ({
 			...categoria ,
-			produtos: categoria.produtos.map(produto=>
-				produto.id == payload.id ? ({...produto, quantidade:Number(produto.quantidade)+Number(payload.quantidade)}):produto
+			produtos: categoria.produtos.map(produto=>{
+				if(produto.id == payload.id){
+					return payload.modo && payload.modo.toLowerCase() == 'saida' ?
+					({...produto, quantidade:Number(produto.quantidade)-Number(payload.quantidade)})
+					:({...produto, quantidade:Number(produto.quantidade)+Number(payload.quantidade)})
+				}
+				return produto
+			}
 			)})
 	)}),
     [addNovaCompra.type]: (state, {payload}) => state,
