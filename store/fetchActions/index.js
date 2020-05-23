@@ -1,5 +1,13 @@
 import api from '../../services/api'
-import { addProducts, addProduct, updateNumberOfUnits, addNovaCompra, addProdutoNovaCompra,removeProdutoNovaCompra, resetNovaCompra } from '../ducks/produtos'
+import { addProducts,
+		 addProduct,
+		 updateNumberOfUnits,
+		 addNovaCompra,
+		 addProdutoNovaCompra,
+		 removeProdutoNovaCompra,
+		 resetNovaCompra,
+} from '../ducks/produtos'
+
 import { addStockData,
          addStockMultipleData,
          setSelectedStockProduct,
@@ -7,12 +15,22 @@ import { addStockData,
 } from '../ducks/estoque'
 
 import {
-    changeSearch, activateSearch, deactivateSearch
+		changeSearch,
+		activateSearch,
+		deactivateSearch,
  } from '../ducks/search'
 
-import {setLivroCaixaRegistros, getLivroCaixaDadosCompraSeleciona, pagarCompra} from '../ducks/livro_caixa'
+import {
+		setLivroCaixaRegistros,
+		getLivroCaixaDadosCompraSeleciona,
+		pagarCompra,
+} from '../ducks/livro_caixa'
 
-import {getComprasData, alterarEstadoCompra} from '../ducks/compras'
+import {
+		getComprasData,
+		alterarEstadoCompra,
+		adicionarUmaCompra,
+} from '../ducks/compras'
 // Products
 export const getProductsByCategory = () =>
     dispatch =>
@@ -49,11 +67,11 @@ export const fetchAddProduct = (nome, preco, categoria, image) =>
         }
 
 // Stock
-export const fetchAddStock = ({quantidade, custo, produto_id}) =>
+export const updateEstoque = ({quantidade, custo, produto_id, modo}) =>
     dispatch =>
-        api.post('/estoque/registro', {produto_id, quantidade, custo, modo:'entrada'})
+        api.post('/estoque/registro', {produto_id, quantidade, custo, modo})
             .then(({data}) => {
-                dispatch(updateNumberOfUnits({quantidade:data.quantidade, id:produto_id}))
+                dispatch(updateNumberOfUnits({quantidade:data.quantidade, id:produto_id, modo}))
                 dispatch(addItemToSelectedStockProduct(data))
             })
             .catch(console.error)
@@ -95,7 +113,6 @@ export const fetchComprasData = () =>
 
 export const fetchLivroCaixaDadosCompraSelecionada = (id) =>
 	dispatch =>{
-		console.log(id)
 		return api.get(`/livro_caixa/resumo/${id}/compra`)
 				.then(({data}) => dispatch(getLivroCaixaDadosCompraSeleciona(data)))
 				.catch(console.error)
@@ -108,7 +125,6 @@ export const fecharCompraAction = (id) =>
 
 export const pagarCompraAction = (id, modo, valor) =>
 	dispatch =>{
-		console.log(id, modo, valor)
 		api.post(`/compras/${id}/pagar`, {valor, modo, tipo_transacao: "entrada"})
 			.then(({data}) => {
 				dispatch(pagarCompra({data, id, modo, valor}))
@@ -119,12 +135,6 @@ export const pagarCompraAction = (id, modo, valor) =>
 
 export const adicionarNovaCompraAction = (nome, barqueiro, produtos) =>
 	dispatch =>{
-		console.log({
-			nome,
-			barqueiro,
-			produtos,
-			"pago": 0
-		})
 		api.post(`/compras`, {
 				nome,
 				barqueiro,
@@ -134,6 +144,15 @@ export const adicionarNovaCompraAction = (nome, barqueiro, produtos) =>
 		.then(({data}) => {
 			dispatch(addNovaCompra(data))
 			dispatch(resetNovaCompra())
+			dispatch(adicionarUmaCompra(data))
+			data.produtos.map(({produtos}) => {
+				produtos.map(({dados}) => {
+					dados.map(dado => {
+						dispatch(updateNumberOfUnits({quantidade:dado.quantidade, id:dado.produto_id, modo:'saida'}))
+					})
+
+				})
+			})
 		})
 		.catch(console.error)
 	}
@@ -142,7 +161,7 @@ export const adicionarProdutoNovaCompraAction = (produto) =>
 		dispatch(addProdutoNovaCompra(produto))
 	}
 
-	export const removerProdutoNovaCompraAction = (produto) =>
+export const removerProdutoNovaCompraAction = (produto) =>
 	dispatch =>{
 		dispatch(removeProdutoNovaCompra(produto))
 	}

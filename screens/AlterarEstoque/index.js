@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { 
+import {
     Text,
     View,
     TouchableOpacity,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { useDispatch} from 'react-redux'
-import { fetchAddStock } from '../../store/fetchActions'
+import { updateEstoque } from '../../store/fetchActions'
 
 import styles from './Style'
 
@@ -23,7 +23,7 @@ export default function AlterarEstoqueScreen({route, navigation}){
 
     const {id, nome, categoria, preco, imagem} = route.params
     const handleSubmit = ({custo, quantidade})=> {
-        dispatch(fetchAddStock(({quantidade, custo, produto_id:id})))
+        dispatch(updateEstoque(({quantidade, custo, produto_id:id, modo:'entrada'})))
         formRef.current.clearField('custo')
         formRef.current.clearField('quantidade')
         navigation.goBack()
