@@ -37,13 +37,13 @@ export default function PagarCompra({route, navigation}){
 				<Input label="Deposito" name="deposito" keyboard={'numeric'}/>
 			</Form>
 			<ValoresCaixa
-				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				credito={dadosLivroCaixa.credito}
+				debito={dadosLivroCaixa.debito}
+				dinheiro={dadosLivroCaixa.dinheiro}
 				total={
 					{
-						total: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading",
-						pago: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.pago: "loading"
+						total:dadosLivroCaixa.total.preco_total,
+						pago: dadosLivroCaixa.total.pago
 					}
 				}
 			/>
