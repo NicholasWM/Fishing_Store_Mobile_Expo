@@ -1,32 +1,60 @@
 import React from 'react'
 import {Text, View, StyleSheet} from 'react-native'
-const {textShadow} = require('../../helpers/Style')
+const {textShadow, testeStyle} = require('../../helpers/Style')
 
-export default function ValoresCaixa({dinheiro, credito, debito, total=undefined}){
+export default function ValoresCaixa({dinheiro, credito, debito, deposito, total=undefined}){
+	/*
+		Refactoring:
+			Exibir Deposito
+			Isolar a lógica para diminuir a informação no input
+			Exibir apenas valores maiores que 0
+			Caso nao exista nenhum valor exibir mensagem padrao
 
+	*/
+	const somaValores = (lista) => lista.reduce((acc, curr)=> acc + Number(curr.valor), 0)
 	return (
 		<>
 			<View style={styles.valoresContainer}>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Dinheiro:</Text>
-					<Text style={styles.valorText}>{dinheiro} reais</Text>
-				</View>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Crédito:</Text>
-					<Text style={styles.valorText}>{credito} reais</Text>
-				</View>
-				<View style={styles.valor}>
-					<Text style={styles.valorText}>Débito:</Text>
-					<Text style={styles.valorText}>{debito} reais</Text>
-				</View>
+				{dinheiro && dinheiro.length || credito && credito.length || debito && debito.length || deposito && deposito.length ?
+					<>
+						{dinheiro && dinheiro.length > 0 &&
+							<View style={styles.valor}>
+								<Text style={styles.valorText}>Dinheiro:</Text>
+								<Text style={styles.valorText}>{dinheiro != undefined ? `${somaValores(dinheiro)} reais`: "loading"}</Text>
+							</View>
+						}
+						{credito && credito.length > 0 &&
+							<View style={styles.valor}>
+								<Text style={styles.valorText}>Crédito:</Text>
+								<Text style={styles.valorText}>{credito != undefined ? `${somaValores(credito)} reais`: "loading"}</Text>
+							</View>
+						}
+						{debito && debito.length > 0 &&
+							<View style={styles.valor}>
+								<Text style={styles.valorText}>Débito:</Text>
+								<Text style={styles.valorText}>{debito != undefined ? `${somaValores(debito)} reais`: "loading"}</Text>
+							</View>
+						}
+						{deposito && deposito.length > 0 &&
+							<View style={styles.valor}>
+								<Text style={styles.valorText}>Deposito:</Text>
+								<Text style={styles.valorText}>{deposito != undefined ? `${somaValores(deposito)} reais`: "loading"}</Text>
+							</View>
+						}
+					</>
+					:
+					<View style={styles.valor}>
+						<Text styles={styles.msgPadraoNenhumValor}>Nenhum Valor inserido!</Text>
+					</View>
+				}
 			</View>
 			{total && (
 				<View style={styles.containerResumo}>
 					<View style={styles.itemContainer}>
-						<Text style={styles.containerResumoText}>Total: {total.total}</Text>
+						<Text style={styles.containerResumoText}>Total: {total.total != undefined ? total.total: "loading"}</Text>
 					</View>
 					<View style={styles.itemContainer}>
-						<Text style={styles.containerResumoText}>Pago: {total.pago}</Text>
+						<Text style={styles.containerResumoText}>Pago: {total.pago != undefined ? total.pago: "loading"}</Text>
 					</View>
 				</View>
 			)}
@@ -65,5 +93,8 @@ const styles = StyleSheet.create({
 	containerResumo: {
 		width:"100%",
 		flexDirection:'row'
+	},
+	msgPadraoNenhumValor:{
+		...testeStyle, fontSize:30
 	}
 })
