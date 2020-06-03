@@ -27,10 +27,10 @@ export default function AddNewProduct({ navigation }) {
         formRef.current.clearField('categoria');
         setSelectedImage("")
     }
-    useEffect(()=> 
+    useEffect(()=>
         navigation.addListener('focus', () => {dispatch(deactivateSearchAction())})
     ,[navigation])
-    
+
     return (
         <KeyboardAvoidingView behavior='padding'>
             <ScrollView >
@@ -43,7 +43,7 @@ export default function AddNewProduct({ navigation }) {
                 <Form ref={formRef} onSubmit={handleSubmit}>
                     <Input label="Nome" name="nome"/>
                     <Input label="Categoria" name="categoria"/>
-                    <Input label="Preço" name="preco"/>
+                    <Input label="Preço" name="preco" keyboardType="number-pad"/>
                 </Form>
                 <EditImage navigation={navigation} image={selectedImage} setImage={setSelectedImage}/>
             </ScrollView >
