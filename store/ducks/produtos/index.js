@@ -27,13 +27,13 @@ export default createReducer(INITIAL_STATE, {
             })():item
         )
         if(!exists){
-            return [...state.estoque, {
+            return {...state, estoque:[...state.estoque, {
                 categoria: payload.categoria,
                 itens_diferentes:1,
                 total_unidades: 0,
                 valor_em_estoque: 0,
                 produtos: [payload]
-            }]
+            }]}
         }
         return {...state ,estoque:[...new_state]}
     },
@@ -55,7 +55,7 @@ export default createReducer(INITIAL_STATE, {
     [resetNovaCompra.type]: (state) => ({...state, nova_compra:[]}),
     [addProdutoNovaCompra.type]: (state, {payload}) => {
 		const indexCompra = state.nova_compra.findIndex(({produto_id}) => produto_id == payload.produto_id)
-		console.log('index', indexCompra)
+		// console.log('index', indexCompra)
 		return indexCompra >= 0 ? {
 				...state,
 				nova_compra:[
@@ -69,7 +69,7 @@ export default createReducer(INITIAL_STATE, {
     [removeProdutoNovaCompra.type]: (state, {payload}) => {
 		const indexCompra = state.nova_compra.findIndex(({produto_id}) => produto_id == payload.produto_id)
 		if(indexCompra >= 0){
-			console.log(state.nova_compra[indexCompra])
+			// console.log(state.nova_compra[indexCompra])
 			return {
 				...state,
 				nova_compra: state.nova_compra.map(compra => compra.id == payload.produto_id ? {...compra, quantidade: compra.quantidade - payload.quantidade}: compra).filter(compra => compra.quantidade > 0)
