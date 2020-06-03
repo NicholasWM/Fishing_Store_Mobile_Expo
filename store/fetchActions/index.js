@@ -156,12 +156,12 @@ export const adicionarNovaCompraAction = (nome, barqueiro, produtos) =>
 		})
 		.catch(console.error)
 	}
-export const adicionarProdutoNovaCompraAction = (produto) =>
+export const adicionarProdutoNovaCompraAction = (produto, index, categoria) =>
 	dispatch =>{
-		dispatch(addProdutoNovaCompra(produto))
+		dispatch(addProdutoNovaCompra({produto, index, categoria}))
 	}
 
-export const removerProdutoNovaCompraAction = (produto) =>
+export const removerProdutoNovaCompraAction = (produto, index) =>
 	dispatch =>{
-		dispatch(removeProdutoNovaCompra(produto))
+		dispatch(removeProdutoNovaCompra(produto, index))
 	}

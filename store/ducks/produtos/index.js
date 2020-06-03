@@ -54,25 +54,52 @@ export default createReducer(INITIAL_STATE, {
     [addNovaCompra.type]: (state, {payload}) => state,
     [resetNovaCompra.type]: (state) => ({...state, nova_compra:[]}),
     [addProdutoNovaCompra.type]: (state, {payload}) => {
-		const indexCompra = state.nova_compra.findIndex(({produto_id}) => produto_id == payload.produto_id)
-		// console.log('index', indexCompra)
-		return indexCompra >= 0 ? {
-				...state,
-				nova_compra:[
-				...state.nova_compra.map((compra, index) => indexCompra == index ?
-					({...compra, quantidade: Number(compra.quantidade) + Number(payload.quantidade)}): compra)]
-			}:{
-				...state,
-				nova_compra:[...state.nova_compra, payload]
+		const indexCompra = state.nova_compra.findIndex(({produto_id}) => produto_id == payload.produto.produto_id)
+		console.log("payload: ", payload)
+		let categoria = state.estoque.find(cat => cat.categoria == payload.categoria)
+
+		let produto_em_estoque = categoria.produtos[payload.index]
+
+		console.log(`${state.nova_compra[indexCompra] && state.nova_compra[indexCompra].quantidade} <= ${produto_em_estoque.quantidade}`)
+		if(indexCompra >= 0) {
+			if(!state.nova_compra[indexCompra] ||state.nova_compra[indexCompra].quantidade < produto_em_estoque.quantidade){
+				return {
+					...state,
+					nova_compra:[
+						...state.nova_compra.map((compra, index) =>
+							indexCompra == index ?
+								({...compra, quantidade: Number(compra.quantidade) + Number(payload.produto.quantidade)}): compra)
+					]
+				}
+			}else{
+				return {
+					...state,
+					nova_compra:[
+					...state.nova_compra.map((compra, index) => indexCompra == index ?
+						({...compra, quantidade: Number(compra.quantidade)}): compra)]
+				}
 			}
+		}else{
+			return {
+				...state,
+				nova_compra:[...state.nova_compra, payload.produto]
+			}
+		}
+
 	},
     [removeProdutoNovaCompra.type]: (state, {payload}) => {
 		const indexCompra = state.nova_compra.findIndex(({produto_id}) => produto_id == payload.produto_id)
 		if(indexCompra >= 0){
-			// console.log(state.nova_compra[indexCompra])
 			return {
 				...state,
-				nova_compra: state.nova_compra.map(compra => compra.id == payload.produto_id ? {...compra, quantidade: compra.quantidade - payload.quantidade}: compra).filter(compra => compra.quantidade > 0)
+				nova_compra: state.nova_compra.map((value, index) => {
+					if(index == indexCompra){
+						if(value.quantidade != 0){
+							return {...value, quantidade: value.quantidade - 1}
+						}
+					}
+					return value
+				}).filter(item => item.quantidade != 0)
 			}
 		}
 	},
