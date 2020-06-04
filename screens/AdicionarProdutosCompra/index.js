@@ -3,11 +3,14 @@ import { Text,
 	View, FlatList, Image, StyleSheet,TouchableOpacity, ImageBackground
 } from 'react-native';
 
-import ProdutoInfoImage from '../../components/ProdutoInfoImage'
-
 import {useDispatch, useSelector} from 'react-redux'
 
-import {adicionarProdutoNovaCompraAction, removerProdutoNovaCompraAction} from '../../store/fetchActions'
+import {
+	adicionarProdutoNovaCompraAction,
+	removerProdutoNovaCompraAction,
+	adicionarProdutoSelecionadoEdicaoAction,
+	removerProdutoSelecionadoEdicaoAction
+} from '../../store/fetchActions'
 
 import {getImage} from '../../helpers/Image'
 import {testeStyle} from '../../helpers/Style'
@@ -16,18 +19,25 @@ const plusImage = require('../../assets/images/add.png')
 const minusImage = require('../../assets/images/minus.png')
 
 export default function AdicionarProdutosCompra({route, navigation}){
-	const {produtos} = route.params
-	const nova_compra = useSelector(({produtos})=> produtos.nova_compra)
+	const {produtos, edicao} = route.params
+	console.log(edicao)
+	const compra = edicao ? useSelector(({produtos}) => produtos.compra_selecionada):useSelector(({produtos}) => produtos.nova_compra)
 	const dispatch = useDispatch()
 	const handleAddProdutoCompra = (produtos, index, categoria) => {
+		edicao ?
+			dispatch(adicionarProdutoSelecionadoEdicaoAction(produtos, index, categoria))
+		:
+			dispatch(adicionarProdutoNovaCompraAction(produtos, index, categoria))
 	}
 	const handleRemoveProdutoCompra = (produtos, index) => {
-		// console.log(index)
-		dispatch(removerProdutoNovaCompraAction(produtos))
+		edicao ?
+			dispatch(removerProdutoSelecionadoEdicaoAction(produtos))
+		:
+			dispatch(removerProdutoNovaCompraAction(produtos))
 	}
 
 	const renderProduto = (produto, index) => {
-		const selecionadoID = nova_compra.findIndex(compraProd => compraProd.produto_id == produto.id)
+		const selecionadoID = compra.findIndex(compraProd => compraProd.produto_id == produto.id)
 		const selecionado = selecionadoID >= 0
 		const styles = StyleSheet.create({
 			container:{
@@ -79,7 +89,7 @@ export default function AdicionarProdutosCompra({route, navigation}){
 					<View style={styles.btnIcones}>
 						<TouchableOpacity
 							onPress={() => handleAddProdutoCompra({produto_id:produto.id, quantidade:1}, index, produto.categoria)}
-						>
+							>
 							<Image style={styles.imagemIcone} source={plusImage}/>
 						</TouchableOpacity>
 
@@ -120,9 +130,9 @@ export default function AdicionarProdutosCompra({route, navigation}){
 			/>
 
 			<View style={styles.produtosSelecionados}>
-				{nova_compra.length ? (
+				{compra.length ? (
 					<FlatList
-						data={nova_compra}
+						data={compra}
 						renderItem={({item})=> {
 							const produtoSelecionado = produtos.findIndex(prod => item.produto_id == prod.id) >= 0
 							if(produtoSelecionado){

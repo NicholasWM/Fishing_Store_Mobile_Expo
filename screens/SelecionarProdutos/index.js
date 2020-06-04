@@ -6,14 +6,14 @@ import { Text,
 		TouchableOpacity,
 } from 'react-native';
 
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 import ProdutoInfoImage from '../../components/ProdutoInfoImage'
 
-export default function SelecionarProdutos({navigation}){
+export default function SelecionarProdutos({route, navigation}){
 	const produtos = useSelector(({produtos}) => produtos.estoque)
-	const nova_compra = useSelector(({produtos}) => produtos.nova_compra)
-
+	const edicao = route.params || false
+	const compra = edicao ? useSelector(({produtos}) => produtos.compra_selecionada):useSelector(({produtos}) => produtos.nova_compra)
 	const lojaCategorias = (item) =>{
 
 		const styles = StyleSheet.create({
@@ -40,13 +40,13 @@ export default function SelecionarProdutos({navigation}){
 			<View style={styles.container}>
 				<Text style={styles.categoriaTxt}>{item.categoria}</Text>
 				<View style={styles.produtosSelecionados}>
-					{nova_compra.length ? (
+					{compra.length ? (
 							<FlatList
 								data={item.produtos}
 								renderItem={({item}) => {
-									const produtoCategoria = nova_compra.findIndex(prod => item.id == prod.produto_id) >= 0
+									const produtoCategoria = compra.findIndex(prod => item.id == prod.produto_id) >= 0
 									if(produtoCategoria){
-										return (<ProdutoInfoImage produto={item}/>)
+										return (<ProdutoInfoImage produto={item} edicao={edicao}/>)
 									}
 								}}
 								horizontal={true}
@@ -56,7 +56,7 @@ export default function SelecionarProdutos({navigation}){
 							<Text style={styles.msgNenhumSelecionado}>Nenhum Produto Selecionado</Text>
 						)
 					}
-					<TouchableOpacity onPress={()=> navigation.navigate('Adicionar Produtos a Compra', item)}
+					<TouchableOpacity onPress={()=> navigation.navigate('Adicionar Produtos a Compra', {produtos:item.produtos, edicao})}
 					>
 						<Text style={styles.btnAdicionarProdutos}>Adicionar Produtos</Text>
 					</TouchableOpacity>

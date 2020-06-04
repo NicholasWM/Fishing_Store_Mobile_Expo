@@ -11,9 +11,11 @@ import {getImage} from '../../helpers/Image'
 import {textShadow} from '../../helpers/Style'
 import {useSelector} from 'react-redux'
 
-export default function ProdutoInfoImage({produto}){
-	const nova_compra = useSelector(({produtos}) => produtos.nova_compra)
-	const dados_produto = nova_compra.filter(compra => compra.produto_id == produto.id)[0]
+export default function ProdutoInfoImage({produto, edicao=false}){
+	// const compra = useSelector(({produtos}) => produtos.nova_compra)
+	const compra = edicao ? useSelector(({produtos}) => produtos.compra_selecionada):useSelector(({produtos}) => produtos.nova_compra)
+
+	const dados_produto = compra.filter(compra => compra.produto_id == produto.id)[0]
 	const {quantidade} = dados_produto
 	const {id, preco, nome, imagem} = produto
 	const preco_total = quantidade * preco

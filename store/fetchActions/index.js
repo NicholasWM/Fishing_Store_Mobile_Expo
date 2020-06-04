@@ -6,6 +6,8 @@ import { addProducts,
 		 addProdutoNovaCompra,
 		 removeProdutoNovaCompra,
 		 resetNovaCompra,
+		 addProdutoSelecionadoEdicao,
+		 removeProdutoSelecionadoEdicao
 } from '../ducks/produtos'
 
 import { addStockData,
@@ -164,4 +166,13 @@ export const adicionarProdutoNovaCompraAction = (produto, index, categoria) =>
 export const removerProdutoNovaCompraAction = (produto, index) =>
 	dispatch =>{
 		dispatch(removeProdutoNovaCompra(produto, index))
+	}
+export const adicionarProdutoSelecionadoEdicaoAction = (produto, index, categoria) =>
+	dispatch =>{
+		dispatch(addProdutoSelecionadoEdicao({produto, index, categoria}))
+	}
+
+export const removerProdutoSelecionadoEdicaoAction = (produto, index) =>
+	dispatch =>{
+		dispatch(removeProdutoSelecionadoEdicao(produto, index))
 	}
