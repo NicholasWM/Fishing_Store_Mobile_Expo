@@ -17,7 +17,7 @@ export const removeProdutoSelecionadoEdicao = createAction("REMOVE_PRODUTO_SELEC
 
 export default createReducer(INITIAL_STATE, {
     [addProducts.type]: (state, {payload}) => ({...state, estoque:[...state.estoque,...payload.filter(item =>
-        state.estoque.length === 0 ? true : filtraDuplicados(state.estoque, item, "categoria")
+        state.estoque && state.estoque.length === 0 ? true : filtraDuplicados(state.estoque, item, "categoria")
    ) ]}),
     [addProduct.type]: (state, {payload}) => {
         let exists = false

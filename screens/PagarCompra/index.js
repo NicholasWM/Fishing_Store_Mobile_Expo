@@ -17,14 +17,16 @@ export default function PagarCompra({route, navigation}){
 	const formRef = useRef(null)
 	const dispatch = useDispatch()
 	const handleSubmit = ( {debito, credito, dinheiro, deposito}) => {
-		debito && dispatch(pagarCompraAction(id, 'debito', debito))
-		credito && dispatch(pagarCompraAction(id, 'credito', credito))
-		dinheiro && dispatch(pagarCompraAction(id, 'dinheiro', dinheiro))
-		deposito && dispatch(pagarCompraAction(id, 'deposito', deposito))
-        formRef.current.clearField('debito');
-        formRef.current.clearField('credito');
-        formRef.current.clearField('dinheiro');
-        formRef.current.clearField('deposito');
+		dispatch(pagarCompraAction(id, [
+			{modo:'debito', valor:debito},
+			{modo:'credito', valor: credito},
+			{modo:'dinheiro', valor: dinheiro},
+			{modo:'deposito', valor: deposito},
+		]))
+		formRef.current.clearField('debito');
+		formRef.current.clearField('credito');
+		formRef.current.clearField('dinheiro');
+		formRef.current.clearField('deposito');
 		navigation.goBack()
 	}
 	return (

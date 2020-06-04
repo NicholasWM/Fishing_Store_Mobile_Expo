@@ -125,11 +125,12 @@ export const fecharCompraAction = (id) =>
 		dispatch(alterarEstadoCompra({id, pago:1}))
 	}
 
-export const pagarCompraAction = (id, modo, valor) =>
+export const pagarCompraAction = (id, pagamentos) =>
 	dispatch =>{
-		api.post(`/compras/${id}/pagar`, {valor, modo, tipo_transacao: "entrada"})
+		api.post(`/compras/${id}/pagar`, pagamentos.map(({valor, modo}) => ({valor, modo, tipo_transacao: "entrada"})).filter(({valor})=> valor > 0))
 			.then(({data}) => {
-				dispatch(pagarCompra({data, id, modo, valor}))
+				// dispatch(pagarCompra({data, id, modo, valor}))
+				dispatch(pagarCompra({data}))
 				data.troco != undefined && dispatch(fecharCompraAction(id))
 			})
 			.catch(console.error)
