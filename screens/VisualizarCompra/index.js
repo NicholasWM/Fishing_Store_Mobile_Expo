@@ -66,13 +66,14 @@ export default function VisualizarCompra({route, navigation}){
 				keyExtractor={(item, index)=> String(index)}
 			/>
 			<ValoresCaixa
-				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
-				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
-				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + Number(curr.valor), 0): "loading"}
+				credito={ dadosLivroCaixa.credito}
+				debito={ dadosLivroCaixa.debito}
+				dinheiro={ dadosLivroCaixa.dinheiro}
+				deposito={ dadosLivroCaixa.deposito}
 				total={
 					{
-						total: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading",
-						pago: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.pago: "loading"
+						total: dadosLivroCaixa.total ? dadosLivroCaixa.total.preco_total : undefined,
+						pago: dadosLivroCaixa.total ? dadosLivroCaixa.total.pago : undefined
 					}
 				}
 			/>

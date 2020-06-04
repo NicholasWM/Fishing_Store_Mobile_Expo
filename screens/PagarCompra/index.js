@@ -17,14 +17,16 @@ export default function PagarCompra({route, navigation}){
 	const formRef = useRef(null)
 	const dispatch = useDispatch()
 	const handleSubmit = ( {debito, credito, dinheiro, deposito}) => {
-		debito && dispatch(pagarCompraAction(id, 'debito', debito))
-		credito && dispatch(pagarCompraAction(id, 'credito', credito))
-		dinheiro && dispatch(pagarCompraAction(id, 'dinheiro', dinheiro))
-		deposito && dispatch(pagarCompraAction(id, 'deposito', deposito))
-        formRef.current.clearField('debito');
-        formRef.current.clearField('credito');
-        formRef.current.clearField('dinheiro');
-        formRef.current.clearField('deposito');
+		dispatch(pagarCompraAction(id, [
+			{modo:'debito', valor:debito},
+			{modo:'credito', valor: credito},
+			{modo:'dinheiro', valor: dinheiro},
+			{modo:'deposito', valor: deposito},
+		]))
+		formRef.current.clearField('debito');
+		formRef.current.clearField('credito');
+		formRef.current.clearField('dinheiro');
+		formRef.current.clearField('deposito');
 		navigation.goBack()
 	}
 	return (
@@ -37,13 +39,13 @@ export default function PagarCompra({route, navigation}){
 				<Input label="Deposito" name="deposito" keyboard={'numeric'}/>
 			</Form>
 			<ValoresCaixa
-				credito={dadosLivroCaixa.credito != undefined ? dadosLivroCaixa.credito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				debito={dadosLivroCaixa.debito != undefined ? dadosLivroCaixa.debito.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
-				dinheiro={dadosLivroCaixa.dinheiro != undefined ? dadosLivroCaixa.dinheiro.reduce((acc, curr)=> acc + curr.valor, 0): "loading"}
+				credito={dadosLivroCaixa.credito}
+				debito={dadosLivroCaixa.debito}
+				dinheiro={dadosLivroCaixa.dinheiro}
 				total={
 					{
-						total: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.preco_total: "loading",
-						pago: dadosLivroCaixa.total != undefined ? dadosLivroCaixa.total.pago: "loading"
+						total:dadosLivroCaixa.total.preco_total,
+						pago: dadosLivroCaixa.total.pago
 					}
 				}
 			/>

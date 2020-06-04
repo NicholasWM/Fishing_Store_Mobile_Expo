@@ -3,11 +3,14 @@ import { Text,
 	View, FlatList, Image, StyleSheet,TouchableOpacity, ImageBackground
 } from 'react-native';
 
-import ProdutoInfoImage from '../../components/ProdutoInfoImage'
-
 import {useDispatch, useSelector} from 'react-redux'
 
-import {adicionarProdutoNovaCompraAction, removerProdutoNovaCompraAction} from '../../store/fetchActions'
+import {
+	adicionarProdutoNovaCompraAction,
+	removerProdutoNovaCompraAction,
+	adicionarProdutoSelecionadoEdicaoAction,
+	removerProdutoSelecionadoEdicaoAction
+} from '../../store/fetchActions'
 
 import {getImage} from '../../helpers/Image'
 import {testeStyle} from '../../helpers/Style'
@@ -16,18 +19,25 @@ const plusImage = require('../../assets/images/add.png')
 const minusImage = require('../../assets/images/minus.png')
 
 export default function AdicionarProdutosCompra({route, navigation}){
-	const {produtos} = route.params
-	const nova_compra = useSelector(({produtos})=> produtos.nova_compra)
+	const {produtos, edicao} = route.params
+	console.log(edicao)
+	const compra = edicao ? useSelector(({produtos}) => produtos.compra_selecionada):useSelector(({produtos}) => produtos.nova_compra)
 	const dispatch = useDispatch()
-	const handleAddProdutoCompra = (produtos) => {
-		dispatch(adicionarProdutoNovaCompraAction(produtos))
+	const handleAddProdutoCompra = (produtos, index, categoria) => {
+		edicao ?
+			dispatch(adicionarProdutoSelecionadoEdicaoAction(produtos, index, categoria))
+		:
+			dispatch(adicionarProdutoNovaCompraAction(produtos, index, categoria))
 	}
-	const handleRemoveProdutoCompra = (produtos) => {
-		dispatch(removerProdutoNovaCompraAction(produtos))
+	const handleRemoveProdutoCompra = (produtos, index) => {
+		edicao ?
+			dispatch(removerProdutoSelecionadoEdicaoAction(produtos))
+		:
+			dispatch(removerProdutoNovaCompraAction(produtos))
 	}
 
-	const renderProduto = (produto) => {
-		const selecionadoID = nova_compra.findIndex(compraProd => compraProd.produto_id == produto.id)
+	const renderProduto = (produto, index) => {
+		const selecionadoID = compra.findIndex(compraProd => compraProd.produto_id == produto.id)
 		const selecionado = selecionadoID >= 0
 		const styles = StyleSheet.create({
 			container:{
@@ -78,13 +88,13 @@ export default function AdicionarProdutosCompra({route, navigation}){
 					</View>
 					<View style={styles.btnIcones}>
 						<TouchableOpacity
-							onPress={() => handleAddProdutoCompra({produto_id:produto.id, quantidade:1})}
+							onPress={() => handleAddProdutoCompra({produto_id:produto.id, quantidade:1}, index, produto.categoria)}
 							>
 							<Image style={styles.imagemIcone} source={plusImage}/>
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							onPress={() => handleRemoveProdutoCompra({produto_id:produto.id, quantidade:1})}
+							onPress={() => handleRemoveProdutoCompra({produto_id:produto.id, quantidade:1}, index)}
 						>
 							<Image style={styles.imagemIcone} source={minusImage}/>
 						</TouchableOpacity>
@@ -96,7 +106,7 @@ export default function AdicionarProdutosCompra({route, navigation}){
 
 	const renderProdutoSelecionado = (produto) => {
 		const {imagem, preco} = produtos.find(prod => produto.produto_id == prod.id)
-		console.log('imagem', produto)
+		// console.log('imagem', produto)
 		const styles = StyleSheet.create({
 			imagem:{
 				borderColor:'black', borderRadius:35, borderWidth:2,
@@ -115,14 +125,14 @@ export default function AdicionarProdutosCompra({route, navigation}){
 		<View style={{flex:1}}>
 			<FlatList
 				data={produtos}
-				renderItem={({item})=> renderProduto(item)}
+				renderItem={({item, index})=> item.quantidade > 0 && renderProduto(item, index)}
 				keyExtractor={(item, index)=> String(index)}
 			/>
 
 			<View style={styles.produtosSelecionados}>
-				{nova_compra.length ? (
+				{compra.length ? (
 					<FlatList
-						data={nova_compra}
+						data={compra}
 						renderItem={({item})=> {
 							const produtoSelecionado = produtos.findIndex(prod => item.produto_id == prod.id) >= 0
 							if(produtoSelecionado){

@@ -6,6 +6,8 @@ import { addProducts,
 		 addProdutoNovaCompra,
 		 removeProdutoNovaCompra,
 		 resetNovaCompra,
+		 addProdutoSelecionadoEdicao,
+		 removeProdutoSelecionadoEdicao
 } from '../ducks/produtos'
 
 import { addStockData,
@@ -123,11 +125,12 @@ export const fecharCompraAction = (id) =>
 		dispatch(alterarEstadoCompra({id, pago:1}))
 	}
 
-export const pagarCompraAction = (id, modo, valor) =>
+export const pagarCompraAction = (id, pagamentos) =>
 	dispatch =>{
-		api.post(`/compras/${id}/pagar`, {valor, modo, tipo_transacao: "entrada"})
+		api.post(`/compras/${id}/pagar`, pagamentos.map(({valor, modo}) => ({valor, modo, tipo_transacao: "entrada"})).filter(({valor})=> valor > 0))
 			.then(({data}) => {
-				dispatch(pagarCompra({data, id, modo, valor}))
+				// dispatch(pagarCompra({data, id, modo, valor}))
+				dispatch(pagarCompra({data}))
 				data.troco != undefined && dispatch(fecharCompraAction(id))
 			})
 			.catch(console.error)
@@ -156,12 +159,21 @@ export const adicionarNovaCompraAction = (nome, barqueiro, produtos) =>
 		})
 		.catch(console.error)
 	}
-export const adicionarProdutoNovaCompraAction = (produto) =>
+export const adicionarProdutoNovaCompraAction = (produto, index, categoria) =>
 	dispatch =>{
-		dispatch(addProdutoNovaCompra(produto))
+		dispatch(addProdutoNovaCompra({produto, index, categoria}))
 	}
 
-export const removerProdutoNovaCompraAction = (produto) =>
+export const removerProdutoNovaCompraAction = (produto, index) =>
 	dispatch =>{
-		dispatch(removeProdutoNovaCompra(produto))
+		dispatch(removeProdutoNovaCompra(produto, index))
+	}
+export const adicionarProdutoSelecionadoEdicaoAction = (produto, index, categoria) =>
+	dispatch =>{
+		dispatch(addProdutoSelecionadoEdicao({produto, index, categoria}))
+	}
+
+export const removerProdutoSelecionadoEdicaoAction = (produto, index) =>
+	dispatch =>{
+		dispatch(removeProdutoSelecionadoEdicao(produto, index))
 	}

@@ -22,6 +22,9 @@ export default function CriarCompra({navigation}){
 
     async function handleSubmit({turma, barqueiro}) {
 		dispatch(adicionarNovaCompraAction(turma, barqueiro, nova_compra))
+		formRef.current.clearField('turma');
+		formRef.current.clearField('barqueiro');
+		navigation.navigate('Compras')
     }
 
 	const styles = StyleSheet.create({
@@ -46,7 +49,6 @@ export default function CriarCompra({navigation}){
 	return (
 		<View style={{flex: 1}}>
 			<View style={{flex: 0.3, borderWidth:1}}>
-				{/* <Text>{JSON.stringify(produtos)}</Text> */}
 				{nova_compra.length > 0 && (
 					<FlatList
 						data={nova_compra}
@@ -54,7 +56,6 @@ export default function CriarCompra({navigation}){
 							const allProducts = categorias.flat()
 							const produtoSelecionado = allProducts.find(produto => produto.id == item.produto_id)
 							if(produtoSelecionado != undefined){
-								console.log(`Achei ${produtoSelecionado.nome} `)
 								return (<ProdutoInfoImage produto={produtoSelecionado}/>)
 							}
 						}}
