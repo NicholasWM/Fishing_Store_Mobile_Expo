@@ -6,6 +6,7 @@ import { addProducts,
 		 addProdutoNovaCompra,
 		 removeProdutoNovaCompra,
 		 resetNovaCompra,
+		 resetEdicaoCompra,
 		 addProdutoSelecionadoEdicao,
 		 removeProdutoSelecionadoEdicao
 } from '../ducks/produtos'
@@ -176,4 +177,33 @@ export const adicionarProdutoSelecionadoEdicaoAction = (produto, index, categori
 export const removerProdutoSelecionadoEdicaoAction = (produto, index) =>
 	dispatch =>{
 		dispatch(removeProdutoSelecionadoEdicao(produto, index))
+	}
+
+export const editarCompraAction = (nome, barqueiro, produtos) =>
+	dispatch =>{
+		api.post(`/compras`, {
+				nome,
+				barqueiro,
+				produtos,
+				"pago": 0
+			})
+		.then(({data}) => {
+			dispatch(addNovaCompra(data))
+			dispatch(resetNovaCompra())
+			dispatch(adicionarUmaCompra(data))
+			data.produtos.map(({produtos}) => {
+				produtos.map(({dados}) => {
+					dados.map(dado => {
+						dispatch(updateNumberOfUnits({quantidade:dado.quantidade, id:dado.produto_id, modo:'saida'}))
+					})
+
+				})
+			})
+		})
+		.catch(console.error)
+}
+
+export const resetProdutoSelecionadoAction = () =>
+	dispatch => {
+		dispatch(resetEdicaoCompra())
 	}

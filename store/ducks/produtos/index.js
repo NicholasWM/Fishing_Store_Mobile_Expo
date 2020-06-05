@@ -10,6 +10,7 @@ export const editProduct = createAction("EDIT_PRODUCT")
 export const updateNumberOfUnits = createAction("UPDATE_NUMBER_OF_UNITS")
 export const addNovaCompra = createAction("ADD_NOVA_COMPRA")
 export const resetNovaCompra = createAction("RESET_NOVA_COMPRA")
+export const resetEdicaoCompra = createAction("RESET_EDICAO_COMPRA")
 export const addProdutoNovaCompra = createAction("ADD_PRODUTO_NOVA_COMPRA")
 export const removeProdutoNovaCompra = createAction("REMOVE_PRODUTO_NOVA_COMPRA")
 export const addProdutoSelecionadoEdicao = createAction("ADD_PRODUTO_SELECIONADO_EDICAO")
@@ -155,5 +156,5 @@ export default createReducer(INITIAL_STATE, {
 			}
 		}
 	},
-
+	[resetEdicaoCompra.type]: (state,{payload}) => ({...state, compra_selecionada: []})
 })
