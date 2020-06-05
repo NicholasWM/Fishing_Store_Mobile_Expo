@@ -12,7 +12,6 @@ import DadoFrete from '../../components/DadoFrete'
 import BottomMenu from '../../components/BottomMenu'
 
 export default function VisualizarCompra({route, navigation}){
-	const [dadosPagamento, setDadosPagamento] = useState([])
 	const { id, nome, barqueiro, produtos, preco_total } = route.params
 	const dadosLivroCaixa = useSelector(({livro_caixa}) => livro_caixa.compra_selecionada)
 	const dispatch = useDispatch()
@@ -20,11 +19,6 @@ export default function VisualizarCompra({route, navigation}){
 	useEffect(()=> {
 		dispatch(fetchLivroCaixaDadosCompraSelecionada(id))
 	},[])
-	useEffect(()=> {
-		if(dadosLivroCaixa.dinheiro && dadosLivroCaixa.debito && dadosLivroCaixa.credito && dadosLivroCaixa.deposito){
-			setDadosPagamento([...dadosLivroCaixa.dinheiro, ...dadosLivroCaixa.debito, ...dadosLivroCaixa.credito, ...dadosLivroCaixa.deposito])
-		}
-	},[dadosLivroCaixa])
 
 	const renderProduto = (props) => {
 		const {id, nome, imagem, dados} = props

@@ -11,12 +11,9 @@ export default createReducer(INITIAL_STATE, {
 	[setLivroCaixaRegistros.type]: (state,{payload}) => ({...state, registros: payload}),
 	[getLivroCaixaDadosCompraSeleciona.type]: (state,{payload}) => ({...state, compra_selecionada: payload}),
 	[pagarCompra.type]: (state, {payload}) => {
-		// const modo = payload.data.registro.modo
 		let compra_modificada = {}
 		const {registros, pago} = payload.data
-
-		registros.forEach(registro => {
-			console.log("Payload: ", registro)
+		registros && registros.forEach(registro => {
 			compra_modificada[registro.modo] = [...state.compra_selecionada[registro.modo], registro]
 		});
 		return {
