@@ -33,6 +33,7 @@ import {
 		getComprasData,
 		alterarEstadoCompra,
 		adicionarUmaCompra,
+		alterarCompra
 } from '../ducks/compras'
 // Products
 export const getProductsByCategory = () =>
@@ -179,26 +180,19 @@ export const removerProdutoSelecionadoEdicaoAction = (produto, index) =>
 		dispatch(removeProdutoSelecionadoEdicao(produto, index))
 	}
 
-export const editarCompraAction = (nome, barqueiro, produtos) =>
+export const editarCompraAction = (nome, barqueiro, produtos, id) =>
 	dispatch =>{
-		api.post(`/compras`, {
+		api.post(`/compras/${id}/editar`, {
+				id,
 				nome,
 				barqueiro,
 				produtos,
 				"pago": 0
 			})
-		.then(({data}) => {
-			dispatch(addNovaCompra(data))
-			dispatch(resetNovaCompra())
-			dispatch(adicionarUmaCompra(data))
-			data.produtos.map(({produtos}) => {
-				produtos.map(({dados}) => {
-					dados.map(dado => {
-						dispatch(updateNumberOfUnits({quantidade:dado.quantidade, id:dado.produto_id, modo:'saida'}))
-					})
-
-				})
-			})
+		.then(() => {
+			api.get(`/compras/${id}/compra`)
+				.then(resp => dispatch(alterarCompra(resp.data)))
+				.catch(console.error)
 		})
 		.catch(console.error)
 }

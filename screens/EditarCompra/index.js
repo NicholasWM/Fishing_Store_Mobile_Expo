@@ -5,7 +5,7 @@ import { Form } from '@unform/mobile';
 import {deactivateSearchAction } from '../../store/fetchActions'
 import Input from '../../components/Input';
 import { useDispatch, useSelector } from 'react-redux'
-import { adicionarNovaCompraAction, adicionarProdutoSelecionadoEdicaoAction, resetProdutoSelecionadoAction } from '../../store/fetchActions'
+import { editarCompraAction, adicionarProdutoSelecionadoEdicaoAction, resetProdutoSelecionadoAction } from '../../store/fetchActions'
 import ProdutoInfoImage from '../../components/ProdutoInfoImage'
 
 export default function EditarCompra({route, navigation}){
@@ -36,31 +36,11 @@ export default function EditarCompra({route, navigation}){
 	,[navigation])
 
     async function handleSubmit({turma, barqueiro}) {
-		dispatch(adicionarNovaCompraAction(turma, barqueiro, nova_compra))
-		formRef.current.clearField('turma');
-		formRef.current.clearField('barqueiro');
-		navigation.navigate('Compras')
+		dispatch(editarCompraAction(turma, barqueiro, nova_compra, id))
+		navigation.goBack()
+		navigation.goBack()
     }
 
-	const styles = StyleSheet.create({
-		container: {padding:10, margin:5},
-		categoriaTxt: {textAlign: 'center', fontWeight:'bold', fontSize: 20},
-		msgNenhumSelecionado: {textAlign:'center'},
-		produtosSelecionados: {
-			borderRadius: 25, borderWidth: 2, borderColor:'black',
-			height:200,
-			justifyContent:'space-between'
-		},
-		btnAdicionarProdutos: {
-			textAlign:'center',
-			borderRadius: 25, borderWidth: 2, borderColor:'#F92424',
-			backgroundColor:'#2F2F2F',
-			color: '#fff', fontWeight:'bold', fontSize:15,
-			padding:7, width: '80%',
-			marginBottom:2,
-			alignSelf:'center'
-		}
-	})
 	return (
 		<View style={{flex: 1}}>
 			<View style={{flex: 0.3, borderWidth:1}}>
